@@ -18,7 +18,7 @@ namespace qa_website
 
         protected void Login1_Authenticate(object sender, AuthenticateEventArgs e)
         {
-            using (var auth = new AuthenticationControl())
+            using (var auth = new AccountControl())
             {
                 if (auth.ValidateUser(Login1.UserName, Login1.Password))
                 {

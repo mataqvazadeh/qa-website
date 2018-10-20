@@ -8,7 +8,7 @@ using qa_website.Model;
 
 namespace qa_website.Logic
 {
-    public class AuthenticationControl : IDisposable
+    public class AccountControl : IDisposable
     {
         private QAContext context = new QAContext();
         public bool ValidateUser(string userName, string password)
