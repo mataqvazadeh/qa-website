@@ -11,6 +11,7 @@ namespace qa_website.Logic
     public class AccountControl : IDisposable
     {
         private QAContext context = new QAContext();
+
         public bool ValidateUser(string userName, string password)
         {
             string encodedPassword = FormsAuthentication.HashPasswordForStoringInConfigFile(password, FormsAuthPasswordFormat.SHA1.ToString());
@@ -26,6 +27,15 @@ namespace qa_website.Logic
 
             return true;
         }
+
+        public void LogIn(string userName)
+        {
+            var user = context.Users.Where(u => u.Email == userName).Single();
+            user.LastLogin = DateTime.Now;
+            context.SaveChanges();
+        }
+
+
 
         public void Dispose()
         {

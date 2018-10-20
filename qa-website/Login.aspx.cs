@@ -31,5 +31,13 @@ namespace qa_website
                 }
             }
         }
+
+        protected void Login1_LoggedIn(object sender, EventArgs e)
+        {
+            using(var auth = new AccountControl())
+            {
+                auth.LogIn(Login1.UserName);
+            }
+        }
     }
 }
