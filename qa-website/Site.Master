@@ -49,10 +49,22 @@
                     <li class="nav-item <%= Page.Title == "About" ? "active" : "" %>"><a runat="server" class="nav-link" href="~/About">About</a></li>
                     <li class="nav-item <%= Page.Title == "Contact" ? "active" : "" %>"><a runat="server" class="nav-link" href="~/Contact">Contact</a></li>
                 </ul>
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item <%= Page.Title == "Login" ? "active" : "" %>"><a runat="server" class="nav-link" href="~/Login">Login</a></li>
-                    <li class="nav-item <%= Page.Title == "Register" ? "active" : "" %>"><a runat="server" class="nav-link" href="#">Register</a></li>
-                </ul>
+                <asp:LoginView runat="server" ViewStateMode="Disabled">
+                    <AnonymousTemplate>
+                        <ul class="navbar-nav ml-auto">
+                            <li class="nav-item <%= Page.Title == "Register" ? "active" : "" %>"><a runat="server" class="nav-link" href="~/Register">Register</a></li>
+                            <li class="nav-item <%= Page.Title == "Login" ? "active" : "" %>"><a runat="server" class="nav-link" href="~/Login">Login</a></li>
+                        </ul>
+                    </AnonymousTemplate>
+                    <LoggedInTemplate>
+                        <ul class="nav navbar-nav navbar-right">
+                            <li class="nav-item"><a runat="server" class="nav-link" href="#" title="Manage your account">Hello, <%: Context.User.Identity.Name  %> !</a></li>
+                            <li class="nav-item">
+                                <asp:LoginStatus runat="server" class="nav-link" LogoutAction="Redirect" LogoutText="Log off" LogoutPageUrl="~/" OnLoggingOut="LoggingOut" ID="LoginStatus1" />
+                            </li>
+                        </ul>
+                    </LoggedInTemplate>
+                </asp:LoginView>
 
 <%--                <form class="form-inline my-2 my-lg-0">
                     <input class="form-control mr-sm-2" placeholder="Search" type="text">

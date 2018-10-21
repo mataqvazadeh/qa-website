@@ -35,7 +35,29 @@ namespace qa_website.Logic
             context.SaveChanges();
         }
 
+        public bool RegisterUser(string email, string password, string firstName, string lastName)
+        {
+            string encodedPassword = FormsAuthentication.HashPasswordForStoringInConfigFile(password, FormsAuthPasswordFormat.SHA1.ToString());
 
+            var user = new User()
+            {
+                Email = email,
+                Password = encodedPassword,
+                FirstName = firstName,
+                LastName = lastName,
+                RegisterDate = DateTime.Now
+            };
+
+            try
+            {
+                context.Users.Add(user);
+                context.SaveChanges();
+                return true;
+            } catch
+            {
+                return false;
+            }
+        }
 
         public void Dispose()
         {
