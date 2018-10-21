@@ -46,6 +46,7 @@
             <div class="collapse navbar-collapse" id="navbarColor01">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item <%= Page.Title == "Home Page" ? "active" : "" %>"><a runat="server" class="nav-link" href="~/">Home</a></li>
+                    <li class="nav-item <%= Page.Title == "Ask" ? "active" : "" %>"><a runat="server" id="askLink" class="nav-link" href="~/Panel/AskQuestion" visible="false">Ask Question</a></li>
                     <li class="nav-item <%= Page.Title == "About" ? "active" : "" %>"><a runat="server" class="nav-link" href="~/About">About</a></li>
                     <li class="nav-item <%= Page.Title == "Contact" ? "active" : "" %>"><a runat="server" class="nav-link" href="~/Contact">Contact</a></li>
                 </ul>
@@ -58,7 +59,7 @@
                     </AnonymousTemplate>
                     <LoggedInTemplate>
                         <ul class="nav navbar-nav navbar-right">
-                            <li class="nav-item"><a runat="server" class="nav-link" href="#" title="Manage your account">Hello, <%: Context.User.Identity.Name  %> !</a></li>
+                            <li class="nav-item"><a runat="server" class="nav-link" href="#" title="Manage your account">Hello, <%: HttpContext.Current.User.Identity.Name  %> !</a></li>
                             <li class="nav-item">
                                 <asp:LoginStatus runat="server" class="nav-link" LogoutAction="Redirect" LogoutText="Log off" LogoutPageUrl="~/" OnLoggingOut="LoggingOut" ID="LoginStatus1" />
                             </li>

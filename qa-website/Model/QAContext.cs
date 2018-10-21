@@ -10,6 +10,7 @@ namespace qa_website.Model
         public QAContext()
             : base("name=QAContext")
         {
+            Database.SetInitializer<QAContext>(null);
         }
 
         public virtual DbSet<Answer> Answers { get; set; }

@@ -12,7 +12,10 @@ namespace qa_website
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            if(HttpContext.Current.User.Identity.IsAuthenticated)
+            {
+                askLink.Visible = true;
+            }
         }
 
         protected void LoggingOut(object sender, LoginCancelEventArgs e)
