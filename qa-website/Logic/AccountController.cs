@@ -8,7 +8,7 @@ using qa_website.Model;
 
 namespace qa_website.Logic
 {
-    public class AccountControl : IDisposable
+    public class AccountController : IDisposable
     {
         private QAContext context = new QAContext();
 

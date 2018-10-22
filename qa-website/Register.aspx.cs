@@ -29,7 +29,7 @@ namespace qa_website
         {
             if(IsValid)
             {
-                using (var auth = new AccountControl())
+                using (var auth = new AccountController())
                 {
                     string firstName = string.IsNullOrEmpty(FirstNameTextBox.Text) ? null : FirstNameTextBox.Text;
                     string lastName = string.IsNullOrEmpty(LastNameTextBox.Text) ? null : LastNameTextBox.Text;
