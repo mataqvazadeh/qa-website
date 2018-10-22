@@ -10,7 +10,7 @@ namespace qa_website.Logic
     {
         private QAContext context = new QAContext();
 
-        public bool AskQuestion(string title, string body)
+        public int AskQuestion(string title, string body)
         {
             var user = context.Users.Single(u => u.Email == HttpContext.Current.User.Identity.Name);
 
@@ -26,12 +26,18 @@ namespace qa_website.Logic
             {
                 context.Questions.Add(question);
                 context.SaveChanges();
-                return true;
+                return question.Id;
             }
             catch (Exception)
             {
-                return false;;
+                return -1;
             }
+        }
+
+        public Question GetQuestion(int id)
+        {
+            var question = context.Questions.SingleOrDefault(q => q.Id == id);
+            return question;
         }
 
         public void Dispose()

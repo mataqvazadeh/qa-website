@@ -21,9 +21,10 @@ namespace qa_website.Panel
             {
                 using (var controller = new QuestionController())
                 {
-                    if (controller.AskQuestion(TitleTextBox.Text, BodyTextBox.Text))
+                    var questionId = controller.AskQuestion(TitleTextBox.Text, BodyTextBox.Text);
+                    if (questionId != -1)
                     {
-                        Response.Redirect("~/Default.aspx");
+                        Response.Redirect($"~/QuestionDetail.aspx?QuestionID={questionId}");
                     }
                     else
                     {
