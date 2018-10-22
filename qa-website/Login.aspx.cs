@@ -11,9 +11,14 @@ namespace qa_website
 {
     public partial class Login : System.Web.UI.Page
     {
+
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            var returnUrl = HttpUtility.UrlEncode(Request.QueryString["ReturnUrl"]);
+            if (!string.IsNullOrEmpty(returnUrl))
+            {
+                Login1.DestinationPageUrl = returnUrl;
+            }
         }
 
         protected void Login1_Authenticate(object sender, AuthenticateEventArgs e)
@@ -38,6 +43,15 @@ namespace qa_website
             {
                 auth.LogIn(Login1.UserName);
             }
+        }
+
+        protected override void OnPreLoad(EventArgs e)
+        {
+            if(HttpContext.Current.User.Identity.IsAuthenticated)
+            {
+                Response.Redirect("~/");
+            }
+            base.OnPreLoad(e);
         }
     }
 }

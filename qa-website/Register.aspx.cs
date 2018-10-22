@@ -11,6 +11,15 @@ namespace qa_website
 {
     public partial class Register : System.Web.UI.Page
     {
+        protected override void OnPreLoad(EventArgs e)
+        {
+            if (HttpContext.Current.User.Identity.IsAuthenticated)
+            {
+                Response.Redirect("~/");
+            }
+            base.OnPreLoad(e);
+        }
+
         protected void Page_Load(object sender, EventArgs e)
         {
 
