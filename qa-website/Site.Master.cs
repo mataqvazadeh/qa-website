@@ -21,7 +21,7 @@ namespace qa_website
         protected void LoggingOut(object sender, LoginCancelEventArgs e)
         {
             FormsAuthentication.SignOut();
-            Response.Redirect("Default.aspx");
+            Response.Redirect("~/");
         }
     }
 }
