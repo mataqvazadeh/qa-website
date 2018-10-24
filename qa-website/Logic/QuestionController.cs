@@ -1,6 +1,5 @@
 ﻿using qa_website.Model;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
@@ -11,14 +10,15 @@ namespace qa_website.Logic
         public enum VoteType
         {
             Up = 1,
+            Non = 0,
             Down = -1
         }
 
-        private QAContext context = new QAContext();
+        private QAContext _dbContext = new QAContext();
 
         public int AskQuestion(string title, string body)
         {
-            var user = context.Users.Single(u => u.Email == HttpContext.Current.User.Identity.Name);
+            var user = _dbContext.Users.Single(u => u.Email == HttpContext.Current.User.Identity.Name);
 
             var question = new Question()
             {
@@ -30,8 +30,8 @@ namespace qa_website.Logic
 
             try
             {
-                context.Questions.Add(question);
-                context.SaveChanges();
+                _dbContext.Questions.Add(question);
+                _dbContext.SaveChanges();
                 return question.Id;
             }
             catch (Exception)
@@ -42,67 +42,52 @@ namespace qa_website.Logic
 
         public Question GetQuestion(int id)
         {
-            var question = context.Questions.SingleOrDefault(q => q.Id == id);
+            var question = _dbContext.Questions.SingleOrDefault(q => q.Id == id);
             return question;
         }
 
         public int ManageVote(VoteType userVote, int id)
         {
-            var user = context.Users.Single(u => u.Email == HttpContext.Current.User.Identity.Name);
-            var question = context.Questions.Single(q => q.Id == id);
+            var user = _dbContext.Users.Single(u => u.Email == HttpContext.Current.User.Identity.Name);
+            var question = _dbContext.Questions.Single(q => q.Id == id);
 
-            var similarVote =
-                question.Votes.SingleOrDefault(v => v.User == user && v.VoteValue == (byte) userVote);
+            var userOldVoteVote = question.Votes.SingleOrDefault(v => v.User == user);
 
-            int result;
-
-            // Check delete, change or add vote
-            if (similarVote != null) // delete vote
+            // Check if user voted before
+            if (userOldVoteVote != null)
             {
-                context.Votes.Remove(similarVote);
-                result = -1*(int) userVote; // result should be inverse of vote
-            }
-            else
-            {
-                var similarUserVote = question.Votes.SingleOrDefault(v => v.User == user);
-
-                if (similarUserVote != null) // change vote
+                if ((VoteType)userOldVoteVote.VoteValue == userVote) // user wants to delete his/her vote
                 {
-                    similarUserVote.VoteValue = (byte) userVote;
-                    result = 2*(int) userVote; // result should be double of vote (delete old one and add new one)
+                    userOldVoteVote.VoteValue = (short) VoteType.Non;
                 }
-                else // add vote
+                else // user wants to change his/her vote
                 {
+                    userOldVoteVote.VoteValue = (short) userVote;
+                }
+
+                userOldVoteVote.CreateDate = DateTime.Now;
+            }
+            else // if user did not vote until now, so create vote
+            {
                     var vote = new Vote()
                     {
                         User = user,
                         Question = question,
-                        VoteValue = (byte) userVote,
+                        VoteValue = (short) userVote,
                         CreateDate = DateTime.Now
                     };
 
                     question.Votes.Add(vote);
-                    result = (int) userVote; // result should be user vote
-                }
             }
 
-            try
-            {
-                context.SaveChanges();
-                return result;
-            }
-            catch (Exception)
-            {
-
-                return 0;
-            }
-
+            _dbContext.SaveChanges();
+            return question.Votes.Sum(v => v.VoteValue);
         }
 
         public void Dispose()
         {
-            context?.Dispose();
-            context = null;
+            _dbContext?.Dispose();
+            _dbContext = null;
         }
     }
 }

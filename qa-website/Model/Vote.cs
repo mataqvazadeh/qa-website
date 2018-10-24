@@ -11,7 +11,7 @@ namespace qa_website.Model
     {
         public int Id { get; set; }
 
-        public byte VoteValue { get; set; }
+        public short VoteValue { get; set; }
 
         public DateTime CreateDate { get; set; }
 

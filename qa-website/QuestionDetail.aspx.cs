@@ -47,10 +47,7 @@ namespace qa_website
                     vote.ID.ToLower().Contains("up") ? QuestionController.VoteType.Up : QuestionController.VoteType.Down,
                     int.Parse(QuestionId.Value));
 
-                if (result != 0 )
-                {
-                    QuestionVotes.Text = (Convert.ToInt32(QuestionVotes.Text) + result).ToString();
-                }
+                QuestionVotes.Text = result.ToString();
             }
         }
     }
