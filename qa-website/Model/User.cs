@@ -33,6 +33,9 @@ namespace qa_website.Model
         [StringLength(50)]
         public string LastName { get; set; }
 
+        [NotMapped]
+        public string FullName => FirstName + ' ' + LastName;
+
         public DateTime RegisterDate { get; set; }
 
         public DateTime? LastLogin { get; set; }

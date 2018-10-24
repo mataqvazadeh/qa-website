@@ -22,6 +22,33 @@ namespace qa_website {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl QuestionTitle;
         
         /// <summary>
+        /// QuestionAuthor control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl QuestionAuthor;
+        
+        /// <summary>
+        /// QuestionDate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl QuestionDate;
+        
+        /// <summary>
+        /// QuestionVotes control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl QuestionVotes;
+        
+        /// <summary>
         /// QuestionBody control.
         /// </summary>
         /// <remarks>

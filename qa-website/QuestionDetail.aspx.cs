@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -23,6 +24,9 @@ namespace qa_website
                     {
                         QuestionTitle.InnerText = question.Title;
                         QuestionBody.InnerText = question.Body;
+                        QuestionAuthor.InnerText = question.User.FullName;
+                        QuestionDate.InnerText = question.CreateDate.ToString(CultureInfo.InvariantCulture);
+                        QuestionVotes.InnerText = question.Votes.Count.ToString();
                     }
                 }
             }
