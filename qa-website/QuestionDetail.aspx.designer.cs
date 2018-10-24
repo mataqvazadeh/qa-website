@@ -13,6 +13,15 @@ namespace qa_website {
     public partial class QuestionDetail {
         
         /// <summary>
+        /// QuestionId control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField QuestionId;
+        
+        /// <summary>
         /// QuestionTitle control.
         /// </summary>
         /// <remarks>
@@ -28,7 +37,7 @@ namespace qa_website {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl QuestionAuthor;
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor QuestionAuthor;
         
         /// <summary>
         /// QuestionDate control.
@@ -40,13 +49,31 @@ namespace qa_website {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl QuestionDate;
         
         /// <summary>
+        /// QuestionVoteUp control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton QuestionVoteUp;
+        
+        /// <summary>
         /// QuestionVotes control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl QuestionVotes;
+        protected global::System.Web.UI.WebControls.Label QuestionVotes;
+        
+        /// <summary>
+        /// QuestionVoteDown control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton QuestionVoteDown;
         
         /// <summary>
         /// QuestionBody control.

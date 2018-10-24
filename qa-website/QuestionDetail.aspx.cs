@@ -22,17 +22,35 @@ namespace qa_website
                     var question = control.GetQuestion(questionId);
                     if (question != null)
                     {
+                        QuestionId.Value = question.Id.ToString();
                         QuestionTitle.InnerText = question.Title;
                         QuestionBody.InnerText = question.Body;
                         QuestionAuthor.InnerText = question.User.FullName;
                         QuestionDate.InnerText = question.CreateDate.ToString(CultureInfo.InvariantCulture);
-                        QuestionVotes.InnerText = question.Votes.Count.ToString();
+                        QuestionVotes.Text = question.Votes.Sum(v => v.VoteValue).ToString();
                     }
                 }
             }
             else
             {
                 Response.Redirect("~/Default.aspx");
+            }
+        }
+
+        protected void QuestionVote_OnClick(object sender, EventArgs e)
+        {
+            var vote = (LinkButton) sender;
+
+            using (var control = new QuestionController())
+            {
+                var result = control.ManageVote(
+                    vote.ID.ToLower().Contains("up") ? QuestionController.VoteType.Up : QuestionController.VoteType.Down,
+                    int.Parse(QuestionId.Value));
+
+                if (result != 0 )
+                {
+                    QuestionVotes.Text = (Convert.ToInt32(QuestionVotes.Text) + result).ToString();
+                }
             }
         }
     }
