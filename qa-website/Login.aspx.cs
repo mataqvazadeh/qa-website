@@ -28,7 +28,6 @@ namespace qa_website
                 if (auth.ValidateUser(Login1.UserName, Login1.Password))
                 {
                     e.Authenticated = true;
-                    FormsAuthentication.RedirectFromLoginPage(Login1.UserName, false);
                 }
                 else
                 {

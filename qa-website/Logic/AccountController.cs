@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Web;
 using System.Web.Configuration;
 using System.Web.Security;
+using qa_website.Helper;
 using qa_website.Model;
 
 namespace qa_website.Logic
@@ -14,11 +16,12 @@ namespace qa_website.Logic
 
         public bool ValidateUser(string userName, string password)
         {
+            //string encodedPassword = PasswordEncryptor.ComputeHash(password);
             string encodedPassword = FormsAuthentication.HashPasswordForStoringInConfigFile(password, FormsAuthPasswordFormat.SHA1.ToString());
 
             try
             {
-                var user = context.Users.Where(u => (u.Email == userName && u.Password == encodedPassword)).Single();
+                var user = context.Users.Single(u => (u.Email == userName && u.Password == encodedPassword));
             }
             catch( InvalidOperationException )
             {
@@ -30,32 +33,38 @@ namespace qa_website.Logic
 
         public void LogIn(string userName)
         {
-            var user = context.Users.Where(u => u.Email == userName).Single();
+            FormsAuthentication.RedirectFromLoginPage(userName, false);
+
+            var user = context.Users.Single(u => u.Email == userName);
             user.LastLogin = DateTime.Now;
             context.SaveChanges();
         }
 
-        public bool RegisterUser(string email, string password, string firstName, string lastName)
+        public void RegisterUser(string email, string password, string firstName, string lastName)
         {
-            string encodedPassword = FormsAuthentication.HashPasswordForStoringInConfigFile(password, FormsAuthPasswordFormat.SHA1.ToString());
+            // check duplication
+            var dbUser = context.Users.SingleOrDefault(u => u.Email == email);
 
-            var user = new User()
+            if (dbUser != null)
             {
-                Email = email,
-                Password = encodedPassword,
-                FirstName = firstName,
-                LastName = lastName,
-                RegisterDate = DateTime.Now
-            };
+                throw new DuplicateNameException("You can not use this email address.");
+            }
+            else
+            {
+                // encoding password for security
+                string encodedPassword = PasswordEncryptor.ComputeHash(password);
 
-            try
-            {
+                var user = new User()
+                {
+                    Email = email,
+                    Password = encodedPassword,
+                    FirstName = firstName,
+                    LastName = lastName,
+                    RegisterDate = DateTime.Now
+                };
+
                 context.Users.Add(user);
                 context.SaveChanges();
-                return true;
-            } catch
-            {
-                return false;
             }
         }
 

@@ -1,11 +1,8 @@
 ﻿using qa_website.Logic;
 using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Data;
 using System.Web;
 using System.Web.Security;
-using System.Web.UI;
-using System.Web.UI.WebControls;
 
 namespace qa_website
 {
@@ -27,17 +24,27 @@ namespace qa_website
 
         protected void SubmitButton_Click(object sender, EventArgs e)
         {
-            if(IsValid)
+            if (IsValid)
             {
                 using (var auth = new AccountController())
                 {
                     string firstName = string.IsNullOrEmpty(FirstNameTextBox.Text) ? null : FirstNameTextBox.Text;
                     string lastName = string.IsNullOrEmpty(LastNameTextBox.Text) ? null : LastNameTextBox.Text;
 
-                    if(auth.RegisterUser(EmailTextBox.Text, PasswordTextBox.Text, firstName, lastName))
+                    try
                     {
-                        FormsAuthentication.RedirectFromLoginPage(EmailTextBox.Text, false);
+                        auth.RegisterUser(EmailTextBox.Text, PasswordTextBox.Text, firstName, lastName);
                         auth.LogIn(EmailTextBox.Text);
+                    }
+                    catch (DuplicateNameException exception)
+                    {
+                        ErrorMessage.InnerText = exception.Message;
+                        AlertDiv.Visible = true;
+                    }
+                    catch (Exception)
+                    {
+                        ErrorMessage.InnerText = "There was a problem with registration. Please try again later.";
+                        AlertDiv.Visible = true;
                     }
                 }
 
