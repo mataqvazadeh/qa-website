@@ -12,38 +12,38 @@ namespace qa_website.Logic
 {
     public class AccountController : IDisposable
     {
-        private QAContext context = new QAContext();
+        private QAContext _dbContext = new QAContext();
 
         public bool ValidateUser(string userName, string password)
         {
-            //string encodedPassword = PasswordEncryptor.ComputeHash(password);
-            string encodedPassword = FormsAuthentication.HashPasswordForStoringInConfigFile(password, FormsAuthPasswordFormat.SHA1.ToString());
+            // find user
+            var user = _dbContext.Users.SingleOrDefault(u => (u.Email == userName));
 
-            try
+            if (user != null) // if user exsist
             {
-                var user = context.Users.Single(u => (u.Email == userName && u.Password == encodedPassword));
-            }
-            catch( InvalidOperationException )
-            {
-                return false;
+                // check password
+                if (PasswordEncryptor.VerifyHash(password, user.Password))
+                {
+                    return true;
+                }
             }
 
-            return true;
+            return false;
         }
 
         public void LogIn(string userName)
         {
             FormsAuthentication.RedirectFromLoginPage(userName, false);
 
-            var user = context.Users.Single(u => u.Email == userName);
+            var user = _dbContext.Users.Single(u => u.Email == userName);
             user.LastLogin = DateTime.Now;
-            context.SaveChanges();
+            _dbContext.SaveChanges();
         }
 
         public void RegisterUser(string email, string password, string firstName, string lastName)
         {
             // check duplication
-            var dbUser = context.Users.SingleOrDefault(u => u.Email == email);
+            var dbUser = _dbContext.Users.SingleOrDefault(u => u.Email == email);
 
             if (dbUser != null)
             {
@@ -63,15 +63,21 @@ namespace qa_website.Logic
                     RegisterDate = DateTime.Now
                 };
 
-                context.Users.Add(user);
-                context.SaveChanges();
+                _dbContext.Users.Add(user);
+                _dbContext.SaveChanges();
             }
+        }
+
+        public string GetName(string userName)
+        {
+            var user = _dbContext.Users.Single(u => u.Email == userName);
+            return user.FullName;
         }
 
         public void Dispose()
         {
-            context?.Dispose();
-            context = null;
+            _dbContext?.Dispose();
+            _dbContext = null;
         }
     }
 }

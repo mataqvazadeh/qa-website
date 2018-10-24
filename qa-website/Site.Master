@@ -1,4 +1,5 @@
 ﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="qa_website.SiteMaster" %>
+<%@ Import Namespace="qa_website.Logic" %>
 
 <!DOCTYPE html>
 
@@ -60,7 +61,7 @@
                     </AnonymousTemplate>
                     <LoggedInTemplate>
                         <ul class="nav navbar-nav navbar-right">
-                            <li class="nav-item"><a runat="server" class="nav-link" href="#" title="Manage your account">Hello, <%: HttpContext.Current.User.Identity.Name  %> !</a></li>
+                            <li class="nav-item"><a runat="server" class="nav-link" href="#" title="Manage your account">Hello, <%: HttpContext.Current.User.Identity.Name  %>!</a></li>
                             <li class="nav-item">
                                 <asp:LoginStatus runat="server" class="nav-link" LogoutAction="Redirect" LogoutText="Log off" LogoutPageUrl="~/" OnLoggingOut="LoggingOut" ID="LoginStatus1" />
                             </li>

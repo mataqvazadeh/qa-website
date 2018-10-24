@@ -1,15 +1,12 @@
 ﻿using qa_website.Logic;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Web;
-using System.Web.Security;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
 namespace qa_website
 {
-    public partial class Login : System.Web.UI.Page
+    public partial class Login : Page
     {
 
         protected void Page_Load(object sender, EventArgs e)
@@ -17,6 +14,7 @@ namespace qa_website
             var returnUrl = HttpUtility.UrlEncode(Request.QueryString["ReturnUrl"]);
             if (!string.IsNullOrEmpty(returnUrl))
             {
+                // todo: there is an problem with nested pages
                 Login1.DestinationPageUrl = returnUrl;
             }
         }
@@ -25,14 +23,7 @@ namespace qa_website
         {
             using (var auth = new AccountController())
             {
-                if (auth.ValidateUser(Login1.UserName, Login1.Password))
-                {
-                    e.Authenticated = true;
-                }
-                else
-                {
-                    e.Authenticated = false;
-                }
+                e.Authenticated = auth.ValidateUser(Login1.UserName, Login1.Password);
             }
         }
 

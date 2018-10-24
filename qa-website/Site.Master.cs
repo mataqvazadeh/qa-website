@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Security;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using qa_website.Logic;
 
 namespace qa_website
 {
@@ -15,6 +16,11 @@ namespace qa_website
             if(HttpContext.Current.User.Identity.IsAuthenticated)
             {
                 askLink.Visible = true;
+
+                using (var auth = new AccountController())
+                {
+                   
+                }
             }
         }
 
