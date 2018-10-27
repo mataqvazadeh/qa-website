@@ -16,6 +16,11 @@ namespace qa_website.Logic
 
         private QAContext _dbContext = new QAContext();
 
+        public QuestionController()
+        {
+            _dbContext.Database.CommandTimeout = 120;
+        }
+
         public int AskQuestion(string title, string body)
         {
             var user = _dbContext.Users.Single(u => u.Email == HttpContext.Current.User.Identity.Name);
