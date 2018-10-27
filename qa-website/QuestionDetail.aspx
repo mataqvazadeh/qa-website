@@ -30,7 +30,7 @@
                         <p class="lead"><%# Item.Body %></p>
                     </div>
                 </div>
-                <div class="float-right col-11 bg-secondary">
+                <div class="bg-secondary" style="margin-left: 8%; padding: 1px 10px">
                     <asp:ListView runat="server" ID="QuestionCommentsList"
                         ItemType="qa_website.Model.Comment" SelectMethod="GetQuestionComments"
                         DataKeyNames="Id">

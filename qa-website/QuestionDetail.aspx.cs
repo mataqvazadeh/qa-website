@@ -57,7 +57,7 @@ namespace qa_website
             }
         }
 
-        public Comment GetQuestionComments()
+        public List<Comment> GetQuestionComments()
         {
             using (var control = new QuestionController())
             {
