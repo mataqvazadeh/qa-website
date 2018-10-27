@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Web;
@@ -9,7 +8,7 @@ using qa_website.Logic;
 
 namespace qa_website
 {
-    public partial class QuestionDetail : System.Web.UI.Page
+    public partial class QuestionDetail : Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -33,21 +32,31 @@ namespace qa_website
             }
             else
             {
-                Response.Redirect("~/Default.aspx");
+                Response.Redirect("~/");
             }
         }
 
         protected void QuestionVote_OnClick(object sender, EventArgs e)
         {
-            var vote = (LinkButton) sender;
-
-            using (var control = new QuestionController())
+            if (HttpContext.Current.User.Identity.IsAuthenticated)
             {
-                var result = control.ManageVote(
-                    vote.ID.ToLower().Contains("up") ? QuestionController.VoteType.Up : QuestionController.VoteType.Down,
-                    int.Parse(QuestionId.Value));
+                var vote = (LinkButton) sender;
 
-                QuestionVotes.Text = result.ToString();
+                using (var control = new QuestionController())
+                {
+                    var result = control.ManageVote(
+                        vote.ID.ToLower().Contains("up")
+                            ? QuestionController.VoteType.Up
+                            : QuestionController.VoteType.Down,
+                        int.Parse(QuestionId.Value));
+
+                    QuestionVotes.Text = result.ToString();
+                }
+            }
+            else
+            {
+                var currentUrl = HttpUtility.UrlEncode(Request.Url.PathAndQuery);
+                Response.Redirect($"~/Login.aspx?ReturnUrl={currentUrl}");
             }
         }
     }

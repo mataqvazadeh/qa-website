@@ -11,7 +11,7 @@ namespace qa_website
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            var returnUrl = HttpUtility.UrlEncode(Request.QueryString["ReturnUrl"]);
+            var returnUrl = HttpUtility.UrlDecode(Request.QueryString["ReturnUrl"]);
             if (!string.IsNullOrEmpty(returnUrl))
             {
                 // todo: there is an problem with nested pages
