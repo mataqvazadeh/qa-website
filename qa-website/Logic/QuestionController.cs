@@ -1,5 +1,6 @@
 ﻿using qa_website.Model;
 using System;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 
@@ -47,7 +48,7 @@ namespace qa_website.Logic
 
         public Question GetQuestion(int id)
         {
-            var question = _dbContext.Questions.SingleOrDefault(q => q.Id == id);
+            var question = _dbContext.Questions.Include(q => q.User ).Include(q => q.Votes).SingleOrDefault(q => q.Id == id);
             return question;
         }
 
@@ -87,6 +88,16 @@ namespace qa_website.Logic
 
             _dbContext.SaveChanges();
             return question.Votes.Sum(v => v.VoteValue);
+        }
+
+        public IQueryable<Comment> GetComments(int questionId)
+        {
+            return _dbContext.Comments.Where(c => c.QuestionId == questionId).Include( c => c.User);
+        }
+
+        public int GetQuestionVote(int questionId)
+        {
+            return _dbContext.Votes.Where(v => v.QuestionId == questionId).Sum(v => v.VoteValue);
         }
 
         public void Dispose()
