@@ -27,17 +27,19 @@
                         <asp:LinkButton runat="server" ID="QuestionVoteDown" OnClick="QuestionVote_OnClick"><i class="fa fa-4x fa-caret-down"></i></asp:LinkButton>
                     </div>
                     <div class="col-11">
-                        <p><%# Item.Body %></p>
+                        <p class="lead"><%# Item.Body %></p>
                     </div>
                 </div>
-<%--                <asp:ListView runat="server" ID="QuestionCommentsList"
-                    ItemType="qa_website.Model.Comment" SelectMethod="GetQuestionComments"
-                    DataKeyNames="Id">
-                    <ItemTemplate>
-                        <hr />
-                        <p><%# Item.Body %>&nbsp;-&nbsp;<a href="#"><%# Item.User.FullName %>&nbsp;At&nbsp;<%# Item.CreateDate.ToString(CultureInfo.InvariantCulture) %></a></p>
-                    </ItemTemplate>
-                </asp:ListView>--%>
+                <div class="float-right col-11 bg-secondary">
+                    <asp:ListView runat="server" ID="QuestionCommentsList"
+                        ItemType="qa_website.Model.Comment" SelectMethod="GetQuestionComments"
+                        DataKeyNames="Id">
+                        <ItemTemplate>
+                            <hr />
+                            <p><%# Item.Body %>&nbsp;-&nbsp;<a href="#"><%# Item.User.FullName %></a>&nbsp;At&nbsp;<%# Item.CreateDate.ToString(CultureInfo.InvariantCulture) %></p>
+                        </ItemTemplate>
+                    </asp:ListView>
+                </div>
             </div>
 
         </ItemTemplate>

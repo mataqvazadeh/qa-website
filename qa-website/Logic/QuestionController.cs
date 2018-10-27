@@ -1,5 +1,6 @@
 ﻿using qa_website.Model;
 using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Web;
@@ -90,9 +91,10 @@ namespace qa_website.Logic
             return question.Votes.Sum(v => v.VoteValue);
         }
 
-        public IQueryable<Comment> GetComments(int questionId)
+        public Comment GetComments(int questionId)
         {
-            return _dbContext.Comments.Where(c => c.QuestionId == questionId).Include( c => c.User);
+            var comments = _dbContext.Comments.Where(c => c.QuestionId == questionId).Include(c => c.User).First();
+            return comments;
         }
 
         public int GetQuestionVote(int questionId)

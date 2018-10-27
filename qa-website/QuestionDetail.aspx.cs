@@ -57,13 +57,11 @@ namespace qa_website
             }
         }
 
-        public IQueryable<Comment> GetQuestionComments()
+        public Comment GetQuestionComments()
         {
-            var question = (Question)QuestionDetailFormView.DataItem;
-
             using (var control = new QuestionController())
             {
-                return control.GetComments(question.Id);
+                return control.GetComments((int) QuestionDetailFormView.DataKey.Value);
             }
         }
 
