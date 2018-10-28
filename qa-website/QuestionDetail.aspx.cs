@@ -69,8 +69,6 @@ namespace qa_website
         {
             if (questionId != null)
             {
-                var voteLabel = (Label)QuestionDetailFormView.FindControl("QuestionVotes");
-
                 using (var control = new QuestionController())
                 {
                     return control.GetQuestion(questionId.Value);
@@ -81,6 +79,29 @@ namespace qa_website
                 Response.Redirect("~/");
                 return null;
             }
+        }
+
+        protected void QuestionSubmitCommentButton_OnClick(object sender, EventArgs e)
+        {
+            var logginedUser = HttpContext.Current.User.Identity;
+
+            if (logginedUser.IsAuthenticated)
+            {
+                var commentTextBox = (TextBox)QuestionDetailFormView.FindControl("QuestionCommentBody");
+
+                using (var control = new QuestionController())
+                {
+                    control.AddComment((int)QuestionDetailFormView.DataKey.Value, commentTextBox.Text);
+                }
+
+                QuestionDetailFormView.DataBind();
+            }
+            else
+            {
+                var currentUrl = HttpUtility.UrlEncode(Request.Url.PathAndQuery);
+                Response.Redirect($"~/Login.aspx?ReturnUrl={currentUrl}");
+            }
+
         }
     }
 }

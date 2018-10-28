@@ -28,11 +28,11 @@
                 <hr />
                 <div class="row">
                     <div class="col-1 text-center">
-                        <asp:LinkButton runat="server" ID="QuestionVoteUp" OnClick="QuestionVote_OnClick"><i class="fa fa-4x fa-caret-up"></i></asp:LinkButton>
+                        <asp:LinkButton runat="server" ID="QuestionVoteUp" OnClick="QuestionVote_OnClick" CausesValidation="False"><i class="fa fa-4x fa-caret-up"></i></asp:LinkButton>
                         <br />
                         <asp:Label runat="server" ID="QuestionVotes" CssClass="fa-2x"><%# Item.Votes.Sum(v => v.VoteValue) %></asp:Label>
                         <br />
-                        <asp:LinkButton runat="server" ID="QuestionVoteDown" OnClick="QuestionVote_OnClick"><i class="fa fa-4x fa-caret-down"></i></asp:LinkButton>
+                        <asp:LinkButton runat="server" ID="QuestionVoteDown" OnClick="QuestionVote_OnClick" CausesValidation="False"><i class="fa fa-4x fa-caret-down"></i></asp:LinkButton>
                     </div>
                     <div class="col-11">
                         <p class="lead"><%# Item.Body %></p>
@@ -57,12 +57,19 @@
                                 <div class="form-group col-10">
                                     <asp:TextBox runat="server" ID="QuestionCommentBody"
                                         CssClass="form-control col-12" TextMode="MultiLine"
-                                        CausesValidation="True" placeholder="Enter your comment ..."
+                                        placeholder="Enter your comment ..."
                                         Rows="2">
                                     </asp:TextBox>
+                                    <asp:RequiredFieldValidator runat="server" ID="CommentRequiredFieldValidator"
+                                        CssClass="text-danger"
+                                        ControlToValidate="QuestionCommentBody"
+                                        Display="Dynamic"
+                                        EnableClientScript="True"
+                                        ErrorMessage="Comment's Body required.">
+                                    </asp:RequiredFieldValidator>
                                 </div>
                                 <div class="col-2">
-                                    <asp:Button runat="server" ID="QuestionSubmitCommentButton" CssClass="btn btn-outline-primary col-12" Text="Send" CausesValidation="True" />
+                                    <asp:Button runat="server" ID="QuestionSubmitCommentButton" CssClass="btn btn-secondary col-12" Text="Send" CausesValidation="True" OnClick="QuestionSubmitCommentButton_OnClick"/>
                                 </div>
                             </div>
                         </div>

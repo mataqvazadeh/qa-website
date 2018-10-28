@@ -102,6 +102,23 @@ namespace qa_website.Logic
             return _dbContext.Votes.Where(v => v.QuestionId == questionId).Sum(v => v.VoteValue);
         }
 
+        public void AddComment(int questionId, string commentBody)
+        {
+            var user = _dbContext.Users.Single(u => u.Email == HttpContext.Current.User.Identity.Name);
+            var question = _dbContext.Questions.Single(q => q.Id == questionId);
+
+            Comment comment = new Comment()
+            {
+                User = user,
+                Question = question,
+                Body = commentBody,
+                CreateDate = DateTime.Now
+            };
+
+            question.Comments.Add(comment);
+            _dbContext.SaveChanges();
+        }
+
         public void Dispose()
         {
             _dbContext?.Dispose();
