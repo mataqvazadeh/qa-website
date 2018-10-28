@@ -3,6 +3,14 @@
 <%@ Import Namespace="System.Globalization" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#addComment').click(function () {
+                $('#commentForm').fadeToggle();
+                return false;
+            });
+        });
+    </script>
     <div runat="server" id="ErrorDiv" class="alert alert-dismissible alert-danger" visible="False">
         <button type="button" class="close" data-dismiss="alert">&times;</button>
         <h4 class="alert-heading">Error</h4>
@@ -39,6 +47,26 @@
                             <p><%# Item.Body %>&nbsp;-&nbsp;<a href="#"><%# Item.User.FullName %></a>&nbsp;At&nbsp;<%# Item.CreateDate.ToString(CultureInfo.InvariantCulture) %></p>
                         </ItemTemplate>
                     </asp:ListView>
+                </div>
+                <div style="margin-left: 8%; padding: 1px 10px">
+                <hr/>
+                    <a href="#" id="addComment" class="card-link">add a comment</a>
+                    <div class="card" id="commentForm" style="display: none">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="form-group col-10">
+                                    <asp:TextBox runat="server" ID="QuestionCommentBody"
+                                        CssClass="form-control col-12" TextMode="MultiLine"
+                                        CausesValidation="True" placeholder="Enter your comment ..."
+                                        Rows="2">
+                                    </asp:TextBox>
+                                </div>
+                                <div class="col-2">
+                                    <asp:Button runat="server" ID="QuestionSubmitCommentButton" CssClass="btn btn-outline-primary col-12" Text="Send" CausesValidation="True" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>                    
                 </div>
             </div>
 
