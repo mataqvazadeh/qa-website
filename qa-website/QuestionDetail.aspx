@@ -40,8 +40,7 @@
                 </div>
                 <div class="bg-secondary" style="margin-left: 8%; padding: 1px 10px">
                     <asp:ListView runat="server" ID="QuestionCommentsList" DataSource="<%# Item.Comments %>"
-                        ItemType="qa_website.Model.Comment"
-                        DataKeyNames="Id">
+                        ItemType="qa_website.Model.Comment" DataKeyNames="Id">
                         <ItemTemplate>
                             <hr />
                             <p><%# Item.Body %>&nbsp;-&nbsp;<a href="#"><%# Item.User.FullName %></a>&nbsp;At&nbsp;<%# Item.CreateDate.ToString(CultureInfo.InvariantCulture) %></p>
@@ -49,7 +48,7 @@
                     </asp:ListView>
                 </div>
                 <div style="margin-left: 8%; padding: 1px 10px">
-                <hr/>
+                    <hr />
                     <a href="#" id="addComment" class="card-link">add a comment</a>
                     <div class="card" id="commentForm" style="display: none">
                         <div class="card-body">
@@ -69,14 +68,24 @@
                                     </asp:RequiredFieldValidator>
                                 </div>
                                 <div class="col-2">
-                                    <asp:Button runat="server" ID="QuestionSubmitCommentButton" CssClass="btn btn-secondary col-12" Text="Send" CausesValidation="True" OnClick="QuestionSubmitCommentButton_OnClick"/>
+                                    <asp:Button runat="server" ID="QuestionSubmitCommentButton" CssClass="btn btn-secondary col-12" Text="Send" CausesValidation="True" OnClick="QuestionSubmitCommentButton_OnClick" />
                                 </div>
                             </div>
                         </div>
-                    </div>                    
+                    </div>
                 </div>
             </div>
-
+            <asp:ListView runat="server" ID="AnswersList" DataSource="<%# Item.Answers.OrderByDescending(a => a.IsAccepted) %>"
+                ItemType="qa_website.Model.Answer" DataKeyNames="Id">
+                <ItemTemplate>
+                    <div class="card <%#: Item.IsAccepted ? "text-white bg-info" : "border-primary" %> mb-3">
+                        <div class="card-header">Answerd By&nbsp;<a href="#" class="card-link"><%# Item.User.FullName %></a>&nbsp;At&nbsp;<%# Item.CreateDate.ToString(CultureInfo.InvariantCulture) %></div>
+                        <div class="card-body">
+                            <p class="card-text"><%# Item.Body %></p>
+                        </div>
+                    </div>
+                </ItemTemplate>
+            </asp:ListView>
         </ItemTemplate>
     </asp:FormView>
 </asp:Content>
