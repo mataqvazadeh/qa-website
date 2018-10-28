@@ -39,8 +39,8 @@
                     </div>
                 </div>
                 <div class="bg-secondary" style="margin-left: 8%; padding: 1px 10px">
-                    <asp:ListView runat="server" ID="QuestionCommentsList"
-                        ItemType="qa_website.Model.Comment" SelectMethod="GetQuestionComments"
+                    <asp:ListView runat="server" ID="QuestionCommentsList" DataSource="<%# Item.Comments %>"
+                        ItemType="qa_website.Model.Comment"
                         DataKeyNames="Id">
                         <ItemTemplate>
                             <hr />

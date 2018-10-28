@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Web;
@@ -15,22 +14,27 @@ namespace qa_website
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (IsPostBack)
+            {
+                ErrorDiv.Visible = false;
+            }
         }
 
         protected void QuestionVote_OnClick(object sender, EventArgs e)
         {
+            string username;
             var logginedUser = HttpContext.Current.User.Identity;
-            Question question;
+            var questionId = (int) QuestionDetailFormView.DataKey.Value;
+            var voteLabel = (Label)QuestionDetailFormView.FindControl("QuestionVotes");
+
             using (var control = new QuestionController())
             {
-                question = control.GetQuestion((int) QuestionDetailFormView.DataKey.Value);
+                username = control.GetQuestionAutherEmail(questionId);
             }
             
-            var voteLabel = (Label) QuestionDetailFormView.FindControl("QuestionVotes");
-
             if (logginedUser.IsAuthenticated)
             {
-                if (logginedUser.Name != question.User.Email)
+                if (logginedUser.Name != username)
                 {
                     var vote = (LinkButton)sender;
 
@@ -40,7 +44,7 @@ namespace qa_website
                             vote.ID.ToLower().Contains("up")
                                 ? QuestionController.VoteType.Up
                                 : QuestionController.VoteType.Down,
-                            question.Id);
+                            questionId);
                         voteLabel.Text = result.ToString();
                     }
                 }
@@ -54,14 +58,6 @@ namespace qa_website
             {
                 var currentUrl = HttpUtility.UrlEncode(Request.Url.PathAndQuery);
                 Response.Redirect($"~/Login.aspx?ReturnUrl={currentUrl}");
-            }
-        }
-
-        public List<Comment> GetQuestionComments()
-        {
-            using (var control = new QuestionController())
-            {
-                return control.GetComments((int) QuestionDetailFormView.DataKey.Value);
             }
         }
 

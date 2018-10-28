@@ -1,6 +1,5 @@
 ﻿using qa_website.Model;
 using System;
-using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Web;
@@ -49,7 +48,11 @@ namespace qa_website.Logic
 
         public Question GetQuestion(int id)
         {
-            var question = _dbContext.Questions.Include(q => q.User ).Include(q => q.Votes).SingleOrDefault(q => q.Id == id);
+            var question = _dbContext.Questions
+                .Include(q => q.User )
+                .Include(q => q.Votes)
+                .Include(q => q.Comments.Select(c => c.User))
+                .SingleOrDefault(q => q.Id == id);
             return question;
         }
 
@@ -91,17 +94,6 @@ namespace qa_website.Logic
             return question.Votes.Sum(v => v.VoteValue);
         }
 
-        public List<Comment> GetComments(int questionId)
-        {
-            var comments = _dbContext.Comments.Where(c => c.QuestionId == questionId).Include(c => c.User).ToList();
-            return comments;
-        }
-
-        public int GetQuestionVote(int questionId)
-        {
-            return _dbContext.Votes.Where(v => v.QuestionId == questionId).Sum(v => v.VoteValue);
-        }
-
         public void AddComment(int questionId, string commentBody)
         {
             var user = _dbContext.Users.Single(u => u.Email == HttpContext.Current.User.Identity.Name);
@@ -117,6 +109,13 @@ namespace qa_website.Logic
 
             question.Comments.Add(comment);
             _dbContext.SaveChanges();
+        }
+
+        public string GetQuestionAutherEmail(int questionId)
+        {
+            var question = _dbContext.Questions.Single(q => q.Id == questionId);
+
+            return question.User.Email;
         }
 
         public void Dispose()
