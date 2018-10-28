@@ -12,6 +12,7 @@ namespace qa_website
 {
     public partial class QuestionDetail : Page
     {
+
         protected void Page_Load(object sender, EventArgs e)
         {
             if (IsPostBack)
@@ -67,7 +68,9 @@ namespace qa_website
             {
                 using (var control = new QuestionController())
                 {
-                    return control.GetQuestion(questionId.Value);
+                    var question = control.GetQuestion(questionId.Value);
+                    Title = question.Title;
+                    return question;
                 }
             }
             else
@@ -98,6 +101,12 @@ namespace qa_website
                 Response.Redirect($"~/Login.aspx?ReturnUrl={currentUrl}");
             }
 
+        }
+
+        protected override void OnPreLoad(EventArgs e)
+        {
+            Page.Title = "hello";
+            base.OnPreLoad(e);
         }
     }
 }
