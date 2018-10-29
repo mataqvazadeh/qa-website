@@ -38,7 +38,7 @@
                         <p class="lead"><%# Item.Body %></p>
                     </div>
                 </div>
-                <div class="bg-secondary" style="margin-left: 8%; padding: 1px 10px">
+                <div class="bg-secondary py-1 px-2" style="margin-left: 8%;">
                     <asp:ListView runat="server" ID="QuestionCommentsList" DataSource="<%# Item.Comments %>"
                         ItemType="qa_website.Model.Comment" DataKeyNames="Id">
                         <ItemTemplate>
@@ -47,7 +47,7 @@
                         </ItemTemplate>
                     </asp:ListView>
                 </div>
-                <div style="margin-left: 8%; padding: 1px 10px">
+                <div style="margin-left: 8%;">
                     <hr />
                     <a href="#" id="addComment" class="card-link">add a comment</a>
                     <div class="card" id="commentForm" style="display: none">
@@ -67,7 +67,7 @@
                                         ErrorMessage="Comment's Body required.">
                                     </asp:RequiredFieldValidator>
                                 </div>
-                                <div class="col-2">
+                                <div class="col-2  my-auto">
                                     <asp:Button runat="server" ID="QuestionSubmitCommentButton" CssClass="btn btn-secondary col-12" Text="Send" CausesValidation="True" OnClick="QuestionSubmitCommentButton_OnClick" />
                                 </div>
                             </div>
@@ -75,6 +75,25 @@
                     </div>
                 </div>
             </div>
+            <asp:PlaceHolder runat="server" Visible="<%# Item.Answers.Count != 0 %>">
+                <div class="row mb-2">
+                    <div class="col-6 text-center">
+                        <h3><%# Item.Answers.Count() %>&nbsp;Answer<%# Item.Answers.Count > 1 ? "s" : "" %></h3>
+                    </div>
+                    <div class="col-6 text-center">
+                        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                            <label class="btn btn-primary active">
+                                <input type="radio" name="options" id="option1" autocomplete="off" checked="">
+                                Vote
+                            </label>
+                            <label class="btn btn-primary">
+                                <input type="radio" name="options" id="option3" autocomplete="off">
+                                Oldest
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </asp:PlaceHolder>
             <asp:ListView runat="server" ID="AnswersList" DataSource="<%# Item.Answers.OrderByDescending(a => a.IsAccepted) %>"
                 ItemType="qa_website.Model.Answer" DataKeyNames="Id">
                 <ItemTemplate>
