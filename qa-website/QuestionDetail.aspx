@@ -102,7 +102,7 @@
             <asp:ListView runat="server" ID="AnswersList" DataSource="<%# Item.Answers.OrderByDescending(a => a.IsAccepted).ThenByDescending(a => a.Votes.Sum(v => v.VoteValue)).ThenBy(a => a.CreateDate) %>"
                 ItemType="qa_website.Model.Answer" DataKeyNames="Id">
                 <ItemTemplate>
-                    <div class="card <%#: Item.IsAccepted ? "border-success" : "border-primary" %> mb-3" style="border-width: 3px;">
+                    <div class="card <%#: Item.IsAccepted ? "border-success" : "border-primary" %> mb-3" style="border-width: 3px;"  id='<%# $"answer{Item.Id}" %>'>
                         <div class="card-header">
                             <asp:PlaceHolder runat="server" Visible="<%# Item.Question.User.Email == HttpContext.Current.User.Identity.Name %>">
                                 <asp:LinkButton runat="server" ID="AcceptAnswer" OnClick="AcceptAnswer_OnClick" CausesValidation="False" CommandArgument="<%# Item.Id %>">
@@ -164,7 +164,6 @@
                                     </div>
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </ItemTemplate>
