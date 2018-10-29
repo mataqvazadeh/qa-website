@@ -1,6 +1,5 @@
 ﻿using qa_website.Model;
 using System;
-using System.Data.Entity;
 using System.Linq;
 using System.Web;
 
@@ -44,19 +43,6 @@ namespace qa_website.Logic
             {
                 return -1;
             }
-        }
-
-        public Question GetQuestion(int id)
-        {
-            var question = _dbContext.Questions
-                .Include(q => q.User )
-                .Include(q => q.Votes)
-                .Include(q => q.Comments.Select(c => c.User))
-                .Include(q => q.Answers.Select(a => a.User))
-                .Include(q => q.Answers.Select(a => a.Votes))
-                .Include(q => q.Answers.Select(a => a.Comments.Select(c => c.User)))
-                .SingleOrDefault(q => q.Id == id);
-            return question;
         }
 
         public void ManageVote(VoteType userVote, int id)

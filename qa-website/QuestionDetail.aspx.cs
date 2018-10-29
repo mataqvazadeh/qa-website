@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Data.Entity;
 using System.Globalization;
 using System.Linq;
 using System.Web;
@@ -15,29 +17,57 @@ namespace qa_website
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            var dbContext = new QAContext();
+            int questionId;
+
+            if (int.TryParse(Request.QueryString["QuestionID"], out questionId) && questionId > 0)
+            {
+                var question = dbContext.Questions.SingleOrDefault(q => q.Id == questionId);
+                Title = question?.Title ?? "Untitled";
+            }
+
             if (IsPostBack)
             {
                 ErrorDiv.Visible = false;
             }
         }
 
+        #region Question Methods
+
+        public IQueryable<Question> GetQuestion([QueryString("QuestionID")] int? questionId)
+        {
+            var dbContext = new QAContext();
+            IQueryable<Question> query = dbContext.Questions;
+
+            if (questionId.HasValue && questionId > 0)
+            {
+                query = query.Where(q => q.Id == questionId.Value);
+            }
+            else
+            {
+                Response.Redirect("~/");
+                query = null;
+            }
+
+            return query;
+        }
+
         protected void QuestionVote_OnClick(object sender, EventArgs e)
         {
             string username;
             var logginedUser = HttpContext.Current.User.Identity;
-            var questionId = (int) QuestionDetailFormView.DataKey.Value;
-            var voteLabel = (Label)QuestionDetailFormView.FindControl("QuestionVotes");
+            var vote = (LinkButton)sender;
+            var questionId = int.Parse(vote.CommandArgument);
 
             using (var control = new QuestionController())
             {
                 username = control.GetQuestionAutherEmail(questionId);
             }
-            
-            if (logginedUser.IsAuthenticated)
+
+            if (logginedUser.IsAuthenticated)   // only logined users can vote
             {
-                if (logginedUser.Name != username)
+                if (logginedUser.Name != username)  // nobody can't voye himself/herself
                 {
-                    var vote = (LinkButton)sender;
 
                     using (var control = new QuestionController())
                     {
@@ -63,35 +93,19 @@ namespace qa_website
             }
         }
 
-        public Question GetQuestion([QueryString("QuestionID")] int? questionId)
-        {
-            if (questionId != null)
-            {
-                using (var control = new QuestionController())
-                {
-                    var question = control.GetQuestion(questionId.Value);
-                    Title = question.Title;
-                    return question;
-                }
-            }
-            else
-            {
-                Response.Redirect("~/");
-                return null;
-            }
-        }
-
         protected void QuestionSubmitCommentButton_OnClick(object sender, EventArgs e)
         {
             var logginedUser = HttpContext.Current.User.Identity;
 
-            if (logginedUser.IsAuthenticated)
+            if (logginedUser.IsAuthenticated)   // only logined users can submit comment
             {
+                var submitButton = (Button)sender;
+                var questionId = int.Parse(submitButton.CommandArgument);
                 var commentTextBox = (TextBox)QuestionDetailFormView.FindControl("QuestionCommentBody");
 
                 using (var control = new QuestionController())
                 {
-                    control.AddComment((int)QuestionDetailFormView.DataKey.Value, commentTextBox.Text);
+                    control.AddComment(questionId, commentTextBox.Text);
                 }
 
                 QuestionDetailFormView.DataBind();
@@ -101,6 +115,40 @@ namespace qa_website
                 var currentUrl = HttpUtility.UrlEncode(Request.Url.PathAndQuery);
                 Response.Redirect($"~/Login.aspx?ReturnUrl={currentUrl}");
             }
+        }
+
+        #endregion
+
+        #region Answers Methods
+
+        public IQueryable<Answer> GetAnswers([QueryString("QuestionID")] int? questionId)
+        {
+            var dbContext = new QAContext();
+            IQueryable<Answer> query = dbContext.Answers;
+
+            if (questionId.HasValue && questionId > 0)
+            {
+                query = query.Where(a => a.QuestionId == questionId.Value);
+            }
+            else
+            {
+                query = null;
+            }
+
+            return query;
+        }
+
+        protected void AcceptAnswer_OnClick(object sender, EventArgs e)
+        {
+            var linkButton = (LinkButton)sender;
+            var answerId = int.Parse(linkButton.CommandArgument);
+
+            using (var control = new AnswerController())
+            {
+                control.SetAcceptedAnswer(answerId);
+            }
+
+            AnswersList.DataBind();
         }
 
         protected void AnswerVote_OnClick(object sender, EventArgs e)
@@ -115,9 +163,9 @@ namespace qa_website
                 username = control.GetAnswerAutherEmail(answerId);
             }
 
-            if (logginedUser.IsAuthenticated)
+            if (logginedUser.IsAuthenticated)   // only logedin users can vote to answers
             {
-                if (logginedUser.Name != username)
+                if (logginedUser.Name != username)  // nobody can't vote his/her answer
                 {
 
                     using (var control = new AnswerController())
@@ -135,7 +183,7 @@ namespace qa_website
                     ErrorDiv.Visible = true;
                 }
 
-                QuestionDetailFormView.DataBind();
+                AnswersList.DataBind();
             }
             else
             {
@@ -148,7 +196,7 @@ namespace qa_website
         {
             var logginedUser = HttpContext.Current.User.Identity;
 
-            if (logginedUser.IsAuthenticated)
+            if (logginedUser.IsAuthenticated)   // only logedin users can comment on answers
             {
                 var submitButton = (Button)sender;
                 var answerId = int.Parse(submitButton.CommandArgument);
@@ -159,7 +207,7 @@ namespace qa_website
                     control.AddComment(answerId, commentTextBox.Text);
                 }
 
-                QuestionDetailFormView.DataBind();
+                AnswersList.DataBind();
             }
             else
             {
@@ -168,17 +216,6 @@ namespace qa_website
             }
         }
 
-        protected void AcceptAnswer_OnClick(object sender, EventArgs e)
-        {
-            var linkButton = (LinkButton)sender;
-            var answerId = int.Parse(linkButton.CommandArgument);
-
-            using (var control = new AnswerController())
-            {
-                control.SetAcceptedAnswer(answerId);
-            }
-
-            QuestionDetailFormView.DataBind();
-        }
+        #endregion
     }
 }
