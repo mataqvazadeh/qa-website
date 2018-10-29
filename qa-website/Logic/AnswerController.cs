@@ -59,20 +59,20 @@ namespace qa_website.Logic
             _dbContext.SaveChanges();
         }
 
-        public void AddComment(int questionId, string commentBody)
+        public void AddComment(int answerId, string commentBody)
         {
             var user = _dbContext.Users.Single(u => u.Email == HttpContext.Current.User.Identity.Name);
-            var question = _dbContext.Questions.Single(q => q.Id == questionId);
+            var answer = _dbContext.Answers.Single(a => a.Id == answerId);
 
             Comment comment = new Comment()
             {
                 User = user,
-                Question = question,
+                Answer = answer,
                 Body = commentBody,
                 CreateDate = DateTime.Now
             };
 
-            question.Comments.Add(comment);
+            answer.Comments.Add(comment);
             _dbContext.SaveChanges();
         }
 

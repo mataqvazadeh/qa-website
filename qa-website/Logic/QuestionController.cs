@@ -54,6 +54,7 @@ namespace qa_website.Logic
                 .Include(q => q.Comments.Select(c => c.User))
                 .Include(q => q.Answers.Select(a => a.User))
                 .Include(q => q.Answers.Select(a => a.Votes))
+                .Include(q => q.Answers.Select(a => a.Comments.Select(c => c.User)))
                 .SingleOrDefault(q => q.Id == id);
             return question;
         }

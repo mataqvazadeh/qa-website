@@ -5,8 +5,9 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <script type="text/javascript">
         $(document).ready(function () {
-            $('#addComment').click(function () {
-                $('#commentForm').fadeToggle();
+            $('a.addComment').click(function () {
+                $(this).parent().find('div.commentForm').fadeToggle();
+                //$('#commentForm').fadeToggle();
                 return false;
             });
         });
@@ -49,8 +50,8 @@
                 </div>
                 <div style="margin-left: 8%;">
                     <hr />
-                    <a href="#" id="addComment" class="card-link">add a comment</a>
-                    <div class="card" id="commentForm" style="display: none">
+                    <a href="#" class="card-link addComment">add a comment</a>
+                    <div class="card commentForm" style="display: none">
                         <div class="card-body">
                             <div class="row">
                                 <div class="form-group col-10">
@@ -64,11 +65,14 @@
                                         ControlToValidate="QuestionCommentBody"
                                         Display="Dynamic"
                                         EnableClientScript="True"
-                                        ErrorMessage="Comment's Body required.">
+                                        ErrorMessage="Comment's Body required."
+                                        ValidationGroup="QuestionComment">
                                     </asp:RequiredFieldValidator>
                                 </div>
                                 <div class="col-2  my-auto">
-                                    <asp:Button runat="server" ID="QuestionSubmitCommentButton" CssClass="btn btn-secondary col-12" Text="Send" CausesValidation="True" OnClick="QuestionSubmitCommentButton_OnClick" />
+                                    <asp:Button runat="server" ID="QuestionSubmitCommentButton" CssClass="btn btn-secondary col-12" 
+                                        Text="Send" CausesValidation="True"  ValidationGroup="QuestionComment"
+                                        OnClick="QuestionSubmitCommentButton_OnClick" />
                                 </div>
                             </div>
                         </div>
@@ -113,6 +117,46 @@
                                     <p class="card-text"><%# Item.Body %></p>
                                 </div>
                             </div>
+                            <div class="bg-secondary py-1 px-2" style="margin-left: 8%;">
+                                <asp:ListView runat="server" ID="AnswerCommentsList" DataSource="<%# Item.Comments.OrderBy(c => c.CreateDate) %>"
+                                    ItemType="qa_website.Model.Comment" DataKeyNames="Id">
+                                    <ItemTemplate>
+                                        <hr />
+                                        <p><%# Item.Body %>&nbsp;-&nbsp;<a href="#"><%# Item.User.FullName %></a>&nbsp;At&nbsp;<%# Item.CreateDate.ToString(CultureInfo.InvariantCulture) %></p>
+                                    </ItemTemplate>
+                                </asp:ListView>
+                            </div>
+                            <div style="margin-left: 8%;">
+                                <hr />
+                                <a href="#" class="card-link addComment">add a comment</a>
+                                <div class="card commentForm" style="display: none">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="form-group col-10">
+                                                <asp:TextBox runat="server" ID="AnswerCommentBody"
+                                                    CssClass="form-control col-12" TextMode="MultiLine"
+                                                    placeholder="Enter your comment ..."
+                                                    Rows="2">
+                                                </asp:TextBox>
+                                                <asp:RequiredFieldValidator runat="server" ID="CommentRequiredFieldValidator"
+                                                    CssClass="text-danger"
+                                                    ControlToValidate="AnswerCommentBody"
+                                                    Display="Dynamic"
+                                                    EnableClientScript="True"
+                                                    ErrorMessage="Comment's Body required."
+                                                    ValidationGroup='<%# $"AnswerComment_{Item.Id}" %>'>
+                                                </asp:RequiredFieldValidator>
+                                            </div>
+                                            <div class="col-2  my-auto">
+                                                <asp:Button runat="server" ID="AnswerSubmitCommentButton" CssClass="btn btn-secondary col-12" 
+                                                    Text="Send" CausesValidation="True" ValidationGroup='<%# $"AnswerComment_{Item.Id}" %>'
+                                                    OnClick="AnswerSubmitCommentButton_OnClick" CommandArgument="<%# Item.Id %>" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                 </ItemTemplate>

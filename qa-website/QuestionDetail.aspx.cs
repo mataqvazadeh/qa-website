@@ -101,7 +101,6 @@ namespace qa_website
                 var currentUrl = HttpUtility.UrlEncode(Request.Url.PathAndQuery);
                 Response.Redirect($"~/Login.aspx?ReturnUrl={currentUrl}");
             }
-
         }
 
         protected void AnswerVote_OnClick(object sender, EventArgs e)
@@ -134,6 +133,30 @@ namespace qa_website
                 {
                     ErrorMessage.InnerText = "You can not vote yourself.";
                     ErrorDiv.Visible = true;
+                }
+
+                QuestionDetailFormView.DataBind();
+            }
+            else
+            {
+                var currentUrl = HttpUtility.UrlEncode(Request.Url.PathAndQuery);
+                Response.Redirect($"~/Login.aspx?ReturnUrl={currentUrl}");
+            }
+        }
+
+        protected void AnswerSubmitCommentButton_OnClick(object sender, EventArgs e)
+        {
+            var logginedUser = HttpContext.Current.User.Identity;
+
+            if (logginedUser.IsAuthenticated)
+            {
+                var submitButton = (Button)sender;
+                var answerId = int.Parse(submitButton.CommandArgument);
+                var commentTextBox = (TextBox)submitButton.Parent.FindControl("AnswerCommentBody");
+
+                using (var control = new AnswerController())
+                {
+                    control.AddComment(answerId, commentTextBox.Text);
                 }
 
                 QuestionDetailFormView.DataBind();
