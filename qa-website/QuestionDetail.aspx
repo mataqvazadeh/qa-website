@@ -70,8 +70,8 @@
                                     </asp:RequiredFieldValidator>
                                 </div>
                                 <div class="col-2  my-auto">
-                                    <asp:Button runat="server" ID="QuestionSubmitCommentButton" CssClass="btn btn-secondary col-12" 
-                                        Text="Send" CausesValidation="True"  ValidationGroup="QuestionComment"
+                                    <asp:Button runat="server" ID="QuestionSubmitCommentButton" CssClass="btn btn-secondary col-12"
+                                        Text="Send" CausesValidation="True" ValidationGroup="QuestionComment"
                                         OnClick="QuestionSubmitCommentButton_OnClick" />
                                 </div>
                             </div>
@@ -103,7 +103,15 @@
                 ItemType="qa_website.Model.Answer" DataKeyNames="Id">
                 <ItemTemplate>
                     <div class="card <%#: Item.IsAccepted ? "border-success" : "border-primary" %> mb-3" style="border-width: 3px;">
-                        <div class="card-header">Answerd By&nbsp;<a href="#" class="card-link"><%# Item.User.FullName %></a>&nbsp;At&nbsp;<%# Item.CreateDate.ToString(CultureInfo.InvariantCulture) %></div>
+                        <div class="card-header">
+                            <asp:PlaceHolder runat="server" Visible="<%# Item.Question.User.Email == HttpContext.Current.User.Identity.Name %>">
+                                <asp:LinkButton runat="server" ID="AcceptAnswer" OnClick="AcceptAnswer_OnClick" CausesValidation="False" CommandArgument="<%# Item.Id %>">
+                                    <i class="fa fa-check fa-2x <%#: Item.IsAccepted ? "text-success" : "" %>"></i>
+                                </asp:LinkButton>
+                            </asp:PlaceHolder>
+                            &nbsp;&nbsp;
+                            Answerd By&nbsp;<a href="#" class="card-link"><%# Item.User.FullName %></a>&nbsp;At&nbsp;<%# Item.CreateDate.ToString(CultureInfo.InvariantCulture) %>
+                        </div>
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-1 text-center">
@@ -148,7 +156,7 @@
                                                 </asp:RequiredFieldValidator>
                                             </div>
                                             <div class="col-2  my-auto">
-                                                <asp:Button runat="server" ID="AnswerSubmitCommentButton" CssClass="btn btn-secondary col-12" 
+                                                <asp:Button runat="server" ID="AnswerSubmitCommentButton" CssClass="btn btn-secondary col-12"
                                                     Text="Send" CausesValidation="True" ValidationGroup='<%# $"AnswerComment_{Item.Id}" %>'
                                                     OnClick="AnswerSubmitCommentButton_OnClick" CommandArgument="<%# Item.Id %>" />
                                             </div>

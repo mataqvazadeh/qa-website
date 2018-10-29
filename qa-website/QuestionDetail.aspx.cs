@@ -167,5 +167,18 @@ namespace qa_website
                 Response.Redirect($"~/Login.aspx?ReturnUrl={currentUrl}");
             }
         }
+
+        protected void AcceptAnswer_OnClick(object sender, EventArgs e)
+        {
+            var linkButton = (LinkButton)sender;
+            var answerId = int.Parse(linkButton.CommandArgument);
+
+            using (var control = new AnswerController())
+            {
+                control.SetAcceptedAnswer(answerId);
+            }
+
+            QuestionDetailFormView.DataBind();
+        }
     }
 }

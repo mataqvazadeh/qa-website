@@ -34,26 +34,26 @@ namespace qa_website.Logic
             {
                 if ((VoteType)userOldVoteVote.VoteValue == userVote) // user wants to delete his/her vote
                 {
-                    userOldVoteVote.VoteValue = (short) VoteType.Non;
+                    userOldVoteVote.VoteValue = (short)VoteType.Non;
                 }
                 else // user wants to change his/her vote
                 {
-                    userOldVoteVote.VoteValue = (short) userVote;
+                    userOldVoteVote.VoteValue = (short)userVote;
                 }
 
                 userOldVoteVote.CreateDate = DateTime.Now;
             }
             else // if user did not vote until now, so create vote
             {
-                    var vote = new Vote()
-                    {
-                        User = user,
-                        Answer = answer,
-                        VoteValue = (short) userVote,
-                        CreateDate = DateTime.Now
-                    };
+                var vote = new Vote()
+                {
+                    User = user,
+                    Answer = answer,
+                    VoteValue = (short)userVote,
+                    CreateDate = DateTime.Now
+                };
 
-                    answer.Votes.Add(vote);
+                answer.Votes.Add(vote);
             }
 
             _dbContext.SaveChanges();
@@ -81,6 +81,21 @@ namespace qa_website.Logic
             var answer = _dbContext.Answers.Single(a => a.Id == answerId);
 
             return answer.User.Email;
+        }
+
+        public void SetAcceptedAnswer(int answerId)
+        {
+            var newAcceptedAnswer = _dbContext.Answers.Single(a => a.Id == answerId);
+            var oldAcceptedAnswer = newAcceptedAnswer.Question.Answers.SingleOrDefault(a => a.IsAccepted == true);
+
+            newAcceptedAnswer.IsAccepted = true;
+
+            if (oldAcceptedAnswer != null)  // unaccept old accepted answer if exist
+            {
+                oldAcceptedAnswer.IsAccepted = false;
+            }
+
+            _dbContext.SaveChanges();
         }
 
         public void Dispose()
