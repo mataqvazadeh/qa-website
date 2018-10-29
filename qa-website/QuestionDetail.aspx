@@ -97,10 +97,21 @@
             <asp:ListView runat="server" ID="AnswersList" DataSource="<%# Item.Answers.OrderByDescending(a => a.IsAccepted) %>"
                 ItemType="qa_website.Model.Answer" DataKeyNames="Id">
                 <ItemTemplate>
-                    <div class="card <%#: Item.IsAccepted ? "text-white bg-info" : "border-primary" %> mb-3">
+                    <div class="card <%#: Item.IsAccepted ? "border-success" : "border-primary" %> mb-3" style="border-width: 3px;">
                         <div class="card-header">Answerd By&nbsp;<a href="#" class="card-link"><%# Item.User.FullName %></a>&nbsp;At&nbsp;<%# Item.CreateDate.ToString(CultureInfo.InvariantCulture) %></div>
                         <div class="card-body">
-                            <p class="card-text"><%# Item.Body %></p>
+                            <div class="row">
+                                <div class="col-1 text-center">
+                                    <asp:LinkButton runat="server" ID="QuestionVoteUp" OnClick="QuestionVote_OnClick" CausesValidation="False"><i class="fa fa-2x fa-caret-up"></i></asp:LinkButton>
+                                    <br />
+                                    <asp:Label runat="server" ID="QuestionVotes" Font-Size="25px"><%# Item.Votes.Sum(v => v.VoteValue) %></asp:Label>
+                                    <br />
+                                    <asp:LinkButton runat="server" ID="QuestionVoteDown" OnClick="QuestionVote_OnClick" CausesValidation="False"><i class="fa fa-2x fa-caret-down"></i></asp:LinkButton>
+                                </div>
+                                <div class="col-11">
+                                    <p class="card-text"><%# Item.Body %></p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </ItemTemplate>
