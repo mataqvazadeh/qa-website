@@ -245,6 +245,7 @@
     </Compile>
     <Compile Include="Helper\PasswordEncryptor.cs" />
     <Compile Include="Logic\AccountController.cs" />
+    <Compile Include="Logic\AnswerController.cs" />
     <Compile Include="Logic\QuestionController.cs" />
     <Compile Include="Login.aspx.cs">
       <DependentUpon>Login.aspx</DependentUpon>

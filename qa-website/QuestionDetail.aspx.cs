@@ -41,12 +41,11 @@ namespace qa_website
 
                     using (var control = new QuestionController())
                     {
-                        var result = control.ManageVote(
+                        control.ManageVote(
                             vote.ID.ToLower().Contains("up")
                                 ? QuestionController.VoteType.Up
                                 : QuestionController.VoteType.Down,
                             questionId);
-                        voteLabel.Text = result.ToString();
                     }
                 }
                 else
@@ -54,6 +53,8 @@ namespace qa_website
                     ErrorMessage.InnerText = "You can not vote yourself.";
                     ErrorDiv.Visible = true;
                 }
+
+                QuestionDetailFormView.DataBind();
             }
             else
             {
@@ -103,10 +104,45 @@ namespace qa_website
 
         }
 
-        protected override void OnPreLoad(EventArgs e)
+        protected void AnswerVote_OnClick(object sender, EventArgs e)
         {
-            Page.Title = "hello";
-            base.OnPreLoad(e);
+            string username;
+            var logginedUser = HttpContext.Current.User.Identity;
+            var vote = (LinkButton)sender;
+            var answerId = int.Parse(vote.CommandArgument);
+
+            using (var control = new AnswerController())
+            {
+                username = control.GetAnswerAutherEmail(answerId);
+            }
+
+            if (logginedUser.IsAuthenticated)
+            {
+                if (logginedUser.Name != username)
+                {
+
+                    using (var control = new AnswerController())
+                    {
+                        control.ManageVote(
+                            vote.ID.ToLower().Contains("up")
+                                ? AnswerController.VoteType.Up
+                                : AnswerController.VoteType.Down,
+                            answerId);
+                    }
+                }
+                else
+                {
+                    ErrorMessage.InnerText = "You can not vote yourself.";
+                    ErrorDiv.Visible = true;
+                }
+
+                QuestionDetailFormView.DataBind();
+            }
+            else
+            {
+                var currentUrl = HttpUtility.UrlEncode(Request.Url.PathAndQuery);
+                Response.Redirect($"~/Login.aspx?ReturnUrl={currentUrl}");
+            }
         }
     }
 }

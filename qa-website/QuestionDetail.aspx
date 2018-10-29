@@ -39,7 +39,7 @@
                     </div>
                 </div>
                 <div class="bg-secondary py-1 px-2" style="margin-left: 8%;">
-                    <asp:ListView runat="server" ID="QuestionCommentsList" DataSource="<%# Item.Comments %>"
+                    <asp:ListView runat="server" ID="QuestionCommentsList" DataSource="<%# Item.Comments.OrderBy(c => c.CreateDate) %>"
                         ItemType="qa_website.Model.Comment" DataKeyNames="Id">
                         <ItemTemplate>
                             <hr />
@@ -82,6 +82,7 @@
                     </div>
                     <div class="col-6 text-center">
                         <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                            <%-- todo: Dont Forget Sorting --%>
                             <label class="btn btn-primary active">
                                 <input type="radio" name="options" id="option1" autocomplete="off" checked="">
                                 Vote
@@ -94,7 +95,7 @@
                     </div>
                 </div>
             </asp:PlaceHolder>
-            <asp:ListView runat="server" ID="AnswersList" DataSource="<%# Item.Answers.OrderByDescending(a => a.IsAccepted) %>"
+            <asp:ListView runat="server" ID="AnswersList" DataSource="<%# Item.Answers.OrderByDescending(a => a.IsAccepted).ThenByDescending(a => a.Votes.Sum(v => v.VoteValue)).ThenBy(a => a.CreateDate) %>"
                 ItemType="qa_website.Model.Answer" DataKeyNames="Id">
                 <ItemTemplate>
                     <div class="card <%#: Item.IsAccepted ? "border-success" : "border-primary" %> mb-3" style="border-width: 3px;">
@@ -102,11 +103,11 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-1 text-center">
-                                    <asp:LinkButton runat="server" ID="QuestionVoteUp" OnClick="QuestionVote_OnClick" CausesValidation="False"><i class="fa fa-2x fa-caret-up"></i></asp:LinkButton>
+                                    <asp:LinkButton runat="server" ID="AnswerVoteUp" OnClick="AnswerVote_OnClick" CausesValidation="False" CommandArgument="<%# Item.Id %>"><i class="fa fa-2x fa-caret-up"></i></asp:LinkButton>
                                     <br />
-                                    <asp:Label runat="server" ID="QuestionVotes" Font-Size="25px"><%# Item.Votes.Sum(v => v.VoteValue) %></asp:Label>
+                                    <asp:Label runat="server" ID="AnswerVotes" Font-Size="25px"><%# Item.Votes.Sum(v => v.VoteValue) %></asp:Label>
                                     <br />
-                                    <asp:LinkButton runat="server" ID="QuestionVoteDown" OnClick="QuestionVote_OnClick" CausesValidation="False"><i class="fa fa-2x fa-caret-down"></i></asp:LinkButton>
+                                    <asp:LinkButton runat="server" ID="AnswerVoteDown" OnClick="AnswerVote_OnClick" CausesValidation="False" CommandArgument="<%# Item.Id %>"><i class="fa fa-2x fa-caret-down"></i></asp:LinkButton>
                                 </div>
                                 <div class="col-11">
                                     <p class="card-text"><%# Item.Body %></p>

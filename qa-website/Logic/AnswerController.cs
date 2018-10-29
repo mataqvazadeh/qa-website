@@ -6,7 +6,7 @@ using System.Web;
 
 namespace qa_website.Logic
 {
-    public class QuestionController : IDisposable
+    public class AnswerController : IDisposable
     {
         public enum VoteType
         {
@@ -17,53 +17,17 @@ namespace qa_website.Logic
 
         private QAContext _dbContext = new QAContext();
 
-        public QuestionController()
+        public AnswerController()
         {
             _dbContext.Database.CommandTimeout = 120;
-        }
-
-        public int AskQuestion(string title, string body)
-        {
-            var user = _dbContext.Users.Single(u => u.Email == HttpContext.Current.User.Identity.Name);
-
-            var question = new Question()
-            {
-                Title = title,
-                Body = body,
-                CreateDate = DateTime.Now,
-                User = user
-            };
-
-            try
-            {
-                _dbContext.Questions.Add(question);
-                _dbContext.SaveChanges();
-                return question.Id;
-            }
-            catch (Exception)
-            {
-                return -1;
-            }
-        }
-
-        public Question GetQuestion(int id)
-        {
-            var question = _dbContext.Questions
-                .Include(q => q.User )
-                .Include(q => q.Votes)
-                .Include(q => q.Comments.Select(c => c.User))
-                .Include(q => q.Answers.Select(a => a.User))
-                .Include(q => q.Answers.Select(a => a.Votes))
-                .SingleOrDefault(q => q.Id == id);
-            return question;
         }
 
         public void ManageVote(VoteType userVote, int id)
         {
             var user = _dbContext.Users.Single(u => u.Email == HttpContext.Current.User.Identity.Name);
-            var question = _dbContext.Questions.Single(q => q.Id == id);
+            var answer = _dbContext.Answers.Single(q => q.Id == id);
 
-            var userOldVoteVote = question.Votes.SingleOrDefault(v => v.User == user);
+            var userOldVoteVote = answer.Votes.SingleOrDefault(v => v.User == user);
 
             // Check if user voted before
             if (userOldVoteVote != null)
@@ -84,12 +48,12 @@ namespace qa_website.Logic
                     var vote = new Vote()
                     {
                         User = user,
-                        Question = question,
+                        Answer = answer,
                         VoteValue = (short) userVote,
                         CreateDate = DateTime.Now
                     };
 
-                    question.Votes.Add(vote);
+                    answer.Votes.Add(vote);
             }
 
             _dbContext.SaveChanges();
@@ -112,11 +76,11 @@ namespace qa_website.Logic
             _dbContext.SaveChanges();
         }
 
-        public string GetQuestionAutherEmail(int questionId)
+        public string GetAnswerAutherEmail(int answerId)
         {
-            var question = _dbContext.Questions.Single(q => q.Id == questionId);
+            var answer = _dbContext.Answers.Single(a => a.Id == answerId);
 
-            return question.User.Email;
+            return answer.User.Email;
         }
 
         public void Dispose()
