@@ -12,7 +12,6 @@ namespace qa_website
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
         }
 
         public IQueryable<Question> GetQuestions()
