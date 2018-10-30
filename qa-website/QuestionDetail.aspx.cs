@@ -129,6 +129,19 @@ namespace qa_website
             if (questionId.HasValue && questionId > 0)
             {
                 query = query.Where(a => a.QuestionId == questionId.Value);
+
+                // sort
+                if (AnswersSortValue.Value == "oldest")
+                {
+                    query = query.OrderBy(a => a.CreateDate);
+                }
+                else
+                {
+                    query =
+                        query.OrderByDescending(a => a.IsAccepted)
+                            .ThenByDescending(a => a.Votes.Sum(v => v.VoteValue))
+                            .ThenBy(a => a.CreateDate);
+                }
             }
             else
             {
@@ -217,5 +230,12 @@ namespace qa_website
         }
 
         #endregion
+
+        protected void SortButton_OnClick(object sender, EventArgs e)
+        {
+            var dropDownList = (DropDownList) QuestionDetailFormView.FindControl("SortOptionsList");
+            AnswersSortValue.Value = dropDownList.SelectedValue;
+            AnswersList.DataBind();
+        }
     }
 }

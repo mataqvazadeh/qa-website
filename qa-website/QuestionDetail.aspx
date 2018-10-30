@@ -7,7 +7,6 @@
         $(document).ready(function () {
             $('a.addComment').click(function () {
                 $(this).parent().find('div.commentForm').fadeToggle();
-                //$('#commentForm').fadeToggle();
                 return false;
             });
         });
@@ -17,6 +16,7 @@
         <h4 class="alert-heading">Error</h4>
         <p class="mb-0" runat="server" id="ErrorMessage"></p>
     </div>
+    <asp:HiddenField runat="server" ID="AnswersSortValue" Value="vote" />
     <asp:FormView runat="server" ID="QuestionDetailFormView"
         SelectMethod="GetQuestion"
         ItemType="qa_website.Model.Question"
@@ -85,17 +85,12 @@
                         <h3><%# Item.Answers.Count() %>&nbsp;Answer<%# Item.Answers.Count > 1 ? "s" : "" %></h3>
                     </div>
                     <div class="col-6 text-center">
-                        <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                            <%-- todo: Dont Forget Sorting --%>
-                            <label class="btn btn-primary active">
-                                <input type="radio" name="options" id="option1" autocomplete="off" checked="">
-                                Vote
-                            </label>
-                            <label class="btn btn-primary">
-                                <input type="radio" name="options" id="option3" autocomplete="off">
-                                Oldest
-                            </label>
-                        </div>
+                            <asp:DropDownList runat="server" ID="SortOptionsList" CssClass="custom-select" Width="100">
+                                <asp:ListItem Text="Vote" Value="vote"></asp:ListItem>
+                                <asp:ListItem Text="Oldest" Value="oldest"></asp:ListItem>
+                            </asp:DropDownList>
+                        <asp:Button runat="server" ID="SortButton" CssClass="btn btn-primary ml-2" Width="100"
+                            CausesValidation="False" Text="Sort" OnClick="SortButton_OnClick" />
                     </div>
                 </div>
             </asp:PlaceHolder>
