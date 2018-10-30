@@ -13,6 +13,42 @@ namespace qa_website {
     public partial class _Default {
         
         /// <summary>
+        /// QuestionSortValue control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField QuestionSortValue;
+        
+        /// <summary>
+        /// sortNewest control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RadioButton sortNewest;
+        
+        /// <summary>
+        /// sortVotes control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RadioButton sortVotes;
+        
+        /// <summary>
+        /// sortUnanswered control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RadioButton sortUnanswered;
+        
+        /// <summary>
         /// QuestionsList control.
         /// </summary>
         /// <remarks>

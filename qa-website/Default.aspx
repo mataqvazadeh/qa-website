@@ -3,9 +3,29 @@
 <%@ Import Namespace="System.Globalization" %>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
-
+    <asp:HiddenField runat="server" ID="QuestionSortValue" Value="newest"/>
     <div class="jumbotron">
-        <h1>Recent Questions</h1>
+        <div class="row">
+            <div class="col-6">
+                <h1>Questions</h1>
+            </div>
+            <div class="col-6 text-right">
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                    <label class="btn btn-primary active">
+                        <asp:RadioButton runat="server" ID="sortNewest" AutoPostBack="True" Checked="True"
+                            GroupName="QuestionSort" Text="Newest" OnCheckedChanged="sortQuestionRadioButton_OnCheckedChanged"/>
+                    </label>
+                    <label class="btn btn-primary">
+                        <asp:RadioButton runat="server" ID="sortVotes" AutoPostBack="True"
+                            GroupName="QuestionSort" Text="Votes" OnCheckedChanged="sortQuestionRadioButton_OnCheckedChanged"/>
+                    </label>
+                    <label class="btn btn-primary">
+                        <asp:RadioButton runat="server" ID="sortUnanswered" AutoPostBack="True" Checked="True"
+                            GroupName="QuestionSort" Text="Unanswered" OnCheckedChanged="sortQuestionRadioButton_OnCheckedChanged" />
+                    </label>
+                </div>
+            </div>
+        </div>
         <asp:ListView runat="server" ID="QuestionsList"
             ItemType="qa_website.Model.Question" DataKeyNames="Id" SelectMethod="GetQuestions"
             OnPagePropertiesChanging="QuestionsList_OnPagePropertiesChanging">

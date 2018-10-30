@@ -20,7 +20,22 @@ namespace qa_website
             var dbContext = new QAContext();
             IQueryable<Question> query = dbContext.Questions;
 
-            query = query.OrderByDescending(q => q.CreateDate);
+            // sorting or filtering
+            switch (QuestionSortValue.Value)
+            {
+                case "newest":
+                    query = query.OrderByDescending(q => q.CreateDate);
+                    break;
+                case "votes":
+                    query = query.OrderByDescending(q => q.Votes.Sum(v => v.VoteValue))
+                        .ThenByDescending(q => q.Answers.Any(a => a.IsAccepted))
+                        .ThenByDescending(q => q.Answers.Count)
+                        .ThenByDescending(q => q.CreateDate);
+                    break;
+                case "unanswered":
+                    query = query.Where(q => q.Answers.Count == 0).OrderByDescending(q => q.CreateDate);
+                    break;
+            }
 
             return query;
         }
@@ -29,6 +44,13 @@ namespace qa_website
         {
             //set current page startindex, max rows and rebind to false
             QuestionsDataPager.SetPageProperties(e.StartRowIndex, e.MaximumRows, false);
+            QuestionsList.DataBind();
+        }
+
+        protected void sortQuestionRadioButton_OnCheckedChanged(object sender, EventArgs e)
+        {
+            var radioButton = (RadioButton) sender;
+            QuestionSortValue.Value = radioButton.Text.ToLower();
             QuestionsList.DataBind();
         }
     }
