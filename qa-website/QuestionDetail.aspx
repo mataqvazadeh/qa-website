@@ -85,10 +85,10 @@
                         <h3><%# Item.Answers.Count() %>&nbsp;Answer<%# Item.Answers.Count > 1 ? "s" : "" %></h3>
                     </div>
                     <div class="col-6 text-center">
-                            <asp:DropDownList runat="server" ID="SortOptionsList" CssClass="custom-select" Width="100">
-                                <asp:ListItem Text="Vote" Value="vote"></asp:ListItem>
-                                <asp:ListItem Text="Oldest" Value="oldest"></asp:ListItem>
-                            </asp:DropDownList>
+                        <asp:DropDownList runat="server" ID="SortOptionsList" CssClass="custom-select" Width="100">
+                            <asp:ListItem Text="Vote" Value="vote"></asp:ListItem>
+                            <asp:ListItem Text="Oldest" Value="oldest"></asp:ListItem>
+                        </asp:DropDownList>
                         <asp:Button runat="server" ID="SortButton" CssClass="btn btn-primary ml-2" Width="100"
                             CausesValidation="False" Text="Sort" OnClick="SortButton_OnClick" />
                     </div>
@@ -166,4 +166,26 @@
             </div>
         </ItemTemplate>
     </asp:ListView>
+    <div class="jumbotron">
+        <fieldset>
+            <legend>Your Answer</legend>
+            <div class="form-group">
+                <asp:Label runat="server" ID="AnswerBodyLable" AssociatedControlID="AnswerBodyTextBox">Body</asp:Label>
+                <asp:TextBox CssClass="form-control col-12" ID="AnswerBodyTextBox" TextMode="MultiLine" Rows="10" runat="server"></asp:TextBox>
+                <asp:RequiredFieldValidator
+                    runat="server"
+                    ID="RequiredFieldValidator2"
+                    CssClass="text-danger"
+                    ControlToValidate="AnswerBodyTextBox"
+                    Display="Dynamic"
+                    EnableClientScript="True"
+                    ErrorMessage="Please enter your answer."
+                    ValidationGroup="SubmitAnswer">
+                </asp:RequiredFieldValidator>
+            </div>
+        </fieldset>
+        <asp:Button runat="server" ID="AnswerSubmitButton" CssClass="btn btn-primary btn-lg col-3"
+            CausesValidation="True" ValidationGroup="SubmitAnswer"
+            Text="Post Your Answer" OnClick="AnswerSubmitButton_OnClick" />
+    </div>
 </asp:Content>

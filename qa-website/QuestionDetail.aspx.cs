@@ -229,13 +229,45 @@ namespace qa_website
             }
         }
 
-        #endregion
-
         protected void SortButton_OnClick(object sender, EventArgs e)
         {
-            var dropDownList = (DropDownList) QuestionDetailFormView.FindControl("SortOptionsList");
+            var dropDownList = (DropDownList)QuestionDetailFormView.FindControl("SortOptionsList");
             AnswersSortValue.Value = dropDownList.SelectedValue;
             AnswersList.DataBind();
         }
+
+        protected void AnswerSubmitButton_OnClick(object sender, EventArgs e)
+        {
+            var logginedUser = HttpContext.Current.User.Identity;
+
+            if (logginedUser.IsAuthenticated) // only logedin users can answer to question
+            {
+                int questionId;
+
+                if (int.TryParse(Request.QueryString["QuestionID"], out questionId) && questionId > 0)
+                {
+                    using (var control = new AnswerController())
+                    {
+                        control.AnswerToQuestion(questionId, AnswerBodyTextBox.Text);
+                    }
+
+                    AnswerBodyTextBox.Text = "";
+                    QuestionDetailFormView.DataBind();
+                    AnswersList.DataBind();
+                }
+                else
+                {
+                    ErrorMessage.InnerText = "Please try again later";
+                    ErrorDiv.Visible = true;
+                }
+            }
+            else
+            {
+                var currentUrl = HttpUtility.UrlEncode(Request.Url.PathAndQuery);
+                Response.Redirect($"~/Login.aspx?ReturnUrl={currentUrl}");
+            }
+        }
+
+        #endregion
     }
 }

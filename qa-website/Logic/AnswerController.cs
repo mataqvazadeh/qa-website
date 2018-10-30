@@ -98,6 +98,23 @@ namespace qa_website.Logic
             _dbContext.SaveChanges();
         }
 
+        public void AnswerToQuestion(int questionId, string body)
+        {
+            var user = _dbContext.Users.Single(u => u.Email == HttpContext.Current.User.Identity.Name);
+            var question = _dbContext.Questions.Single(q => q.Id == questionId);
+
+            var answer = new Answer()
+            {
+                Question = question,
+                Body = body,
+                CreateDate = DateTime.Now,
+                User = user
+            };
+
+            question.Answers.Add(answer);
+            _dbContext.SaveChanges();
+        }
+
         public void Dispose()
         {
             _dbContext?.Dispose();
