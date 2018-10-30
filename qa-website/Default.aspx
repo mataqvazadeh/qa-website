@@ -1,42 +1,30 @@
 ﻿<%@ Page Title="Home Page" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="qa_website._Default" %>
+<%@ Import Namespace="System.Globalization" %>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
 
     <div class="jumbotron">
-        <h1>ASP.NET</h1>
-        <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS, and JavaScript.</p>
-        <p><a href="http://www.asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
+        <h1>Recent Questions</h1>
+        <asp:ListView runat="server" ID="QuestionsList"
+            ItemType="qa_website.Model.Question" DataKeyNames="Id" SelectMethod="GetQuestions">
+            <ItemTemplate>
+                <hr/>
+                <div class="row">
+                    <div class="col-1 text-center text-muted">
+                        <h4><%# Item.Votes.Sum(v => v.VoteValue) %></h4>
+                        <p>votes</p>
+                    </div>
+                    <div 
+                        class="col-1 text-center rounded <%# Item.Answers.Count > 0 && !Item.Answers.Any( a => a.IsAccepted) ? "border border-success text-success" : (Item.Answers.Any( a => a.IsAccepted) ? "text-white bg-success" : "text-muted" ) %>">
+                        <h4><%# Item.Answers.Count %></h4>
+                        <p>answers</p>
+                    </div>
+                    <div class="col-10">
+                        <h4><a runat="server" class="card-link" href='<%# $"~/QuestionDetail.aspx?QuestionID={Item.Id}" %>'><%# Item.Title %></a></h4>
+                        <p class="text-muted">Asked by&nbsp;<a href="#"><%# Item.User.FullName %></a>&nbsp;At&nbsp;<%# Item.CreateDate.ToString(CultureInfo.InvariantCulture) %></p>
+                    </div>
+                </div>
+            </ItemTemplate>
+        </asp:ListView>
     </div>
-
-    <div class="row">
-        <div class="col-md-4">
-            <h2>Getting started</h2>
-            <p>
-                ASP.NET Web Forms lets you build dynamic websites using a familiar drag-and-drop, event-driven model.
-            A design surface and hundreds of controls and components let you rapidly build sophisticated, powerful UI-driven sites with data access.
-            </p>
-            <p>
-                <a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301948">Learn more &raquo;</a>
-            </p>
-        </div>
-        <div class="col-md-4">
-            <h2>Get more libraries</h2>
-            <p>
-                NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.
-            </p>
-            <p>
-                <a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301949">Learn more &raquo;</a>
-            </p>
-        </div>
-        <div class="col-md-4">
-            <h2>Web Hosting</h2>
-            <p>
-                You can easily find a web hosting company that offers the right mix of features and price for your applications.
-            </p>
-            <p>
-                <a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301950">Learn more &raquo;</a>
-            </p>
-        </div>
-    </div>
-
 </asp:Content>

@@ -1,6 +1,5 @@
 ﻿using qa_website.Model;
 using System;
-using System.Data.Entity;
 using System.Linq;
 using System.Web;
 
@@ -86,7 +85,7 @@ namespace qa_website.Logic
         public void SetAcceptedAnswer(int answerId)
         {
             var newAcceptedAnswer = _dbContext.Answers.Single(a => a.Id == answerId);
-            var oldAcceptedAnswer = newAcceptedAnswer.Question.Answers.SingleOrDefault(a => a.IsAccepted == true);
+            var oldAcceptedAnswer = newAcceptedAnswer.Question.Answers.SingleOrDefault(a => a.IsAccepted);
 
             newAcceptedAnswer.IsAccepted = true;
 
