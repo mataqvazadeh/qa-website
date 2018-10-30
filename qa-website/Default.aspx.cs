@@ -24,5 +24,12 @@ namespace qa_website
 
             return query;
         }
+
+        protected void QuestionsList_OnPagePropertiesChanging(object sender, PagePropertiesChangingEventArgs e)
+        {
+            //set current page startindex, max rows and rebind to false
+            QuestionsDataPager.SetPageProperties(e.StartRowIndex, e.MaximumRows, false);
+            QuestionsList.DataBind();
+        }
     }
 }

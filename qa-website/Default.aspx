@@ -6,7 +6,8 @@
     <div class="jumbotron">
         <h1>Recent Questions</h1>
         <asp:ListView runat="server" ID="QuestionsList"
-            ItemType="qa_website.Model.Question" DataKeyNames="Id" SelectMethod="GetQuestions">
+            ItemType="qa_website.Model.Question" DataKeyNames="Id" SelectMethod="GetQuestions"
+            OnPagePropertiesChanging="QuestionsList_OnPagePropertiesChanging">
             <ItemTemplate>
                 <hr/>
                 <div class="row">
@@ -26,5 +27,10 @@
                 </div>
             </ItemTemplate>
         </asp:ListView>
+        <asp:DataPager ID="QuestionsDataPager" runat="server" PagedControlID="QuestionsList" PageSize="5">
+            <Fields>
+                <asp:NumericPagerField ButtonType="Link"/>
+            </Fields>
+        </asp:DataPager>    
     </div>
 </asp:Content>
