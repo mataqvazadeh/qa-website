@@ -266,5 +266,12 @@ namespace qa_website
         }
 
         #endregion
+
+        protected void sortAnswerRadioButton_OnCheckedChanged(object sender, EventArgs e)
+        {
+            var radioButton = (RadioButton)sender;
+            AnswersSortValue.Value = radioButton.Text.ToLower();
+            AnswersList.DataBind();
+        }
     }
 }

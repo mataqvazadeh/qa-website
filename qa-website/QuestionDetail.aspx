@@ -85,12 +85,16 @@
                         <h3><%# Item.Answers.Count() %>&nbsp;Answer<%# Item.Answers.Count > 1 ? "s" : "" %></h3>
                     </div>
                     <div class="col-6 text-center">
-                        <asp:DropDownList runat="server" ID="SortOptionsList" CssClass="custom-select" Width="100">
-                            <asp:ListItem Text="Vote" Value="vote"></asp:ListItem>
-                            <asp:ListItem Text="Oldest" Value="oldest"></asp:ListItem>
-                        </asp:DropDownList>
-                        <asp:Button runat="server" ID="SortButton" CssClass="btn btn-primary ml-2" Width="100"
-                            CausesValidation="False" Text="Sort" OnClick="SortButton_OnClick" />
+                        <div class="btn-group btn-group-toggle">
+                            <label class="btn btn-primary <%= AnswersSortValue.Value == "vote" ? "active" : "" %>">
+                                <asp:RadioButton runat="server" ID="sortVote" AutoPostBack="True" Checked='<%# AnswersSortValue.Value == "vote" %>'
+                                    GroupName="AnswerSort" Text="Vote" OnCheckedChanged="sortAnswerRadioButton_OnCheckedChanged" />
+                            </label>
+                            <label class="btn btn-primary <%= AnswersSortValue.Value == "oldest" ? "active" : "" %>">
+                                <asp:RadioButton runat="server" ID="sortOldest" AutoPostBack="True" Checked='<%# AnswersSortValue.Value == "oldest" %>'
+                                    GroupName="AnswerSort" Text="Oldest" OnCheckedChanged="sortAnswerRadioButton_OnCheckedChanged" />
+                            </label>
+                        </div>
                     </div>
                 </div>
             </asp:PlaceHolder>

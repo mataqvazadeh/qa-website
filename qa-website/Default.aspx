@@ -12,15 +12,15 @@
             <div class="col-6 text-right">
                 <div class="btn-group btn-group-toggle">
                     <label class="btn btn-primary <%= QuestionSortValue.Value == "newest" ? "active" : "" %>">
-                        <asp:RadioButton runat="server" ID="sortNewest" AutoPostBack="True" Checked='<%# QuestionSortValue.Value == "newest" ? true : false %>'
+                        <asp:RadioButton runat="server" ID="sortNewest" AutoPostBack="True" Checked='<%# QuestionSortValue.Value == "newest" %>'
                             GroupName="QuestionSort" Text="Newest" OnCheckedChanged="sortQuestionRadioButton_OnCheckedChanged" />
                     </label>
                     <label class="btn btn-primary <%= QuestionSortValue.Value == "votes" ? "active" : "" %>">
-                        <asp:RadioButton runat="server" ID="sortVotes" AutoPostBack="True" Checked='<%# QuestionSortValue.Value == "votes" ? true : false %>'
+                        <asp:RadioButton runat="server" ID="sortVotes" AutoPostBack="True" Checked='<%# QuestionSortValue.Value == "votes" %>'
                             GroupName="QuestionSort" Text="Votes" OnCheckedChanged="sortQuestionRadioButton_OnCheckedChanged" />
                     </label>
                     <label class="btn btn-primary <%= QuestionSortValue.Value == "unanswered" ? "active" : "" %>">
-                        <asp:RadioButton runat="server" ID="sortUnanswered" AutoPostBack="True" Checked='<%# QuestionSortValue.Value == "unanswered" ? true : false %>'
+                        <asp:RadioButton runat="server" ID="sortUnanswered" AutoPostBack="True" Checked='<%# QuestionSortValue.Value == "unanswered" %>'
                             GroupName="QuestionSort" Text="Unanswered" OnCheckedChanged="sortQuestionRadioButton_OnCheckedChanged" />
                     </label>
                 </div>
