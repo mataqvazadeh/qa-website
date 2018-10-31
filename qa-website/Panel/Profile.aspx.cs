@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data;
 using System.Linq;
-using System.Web;
-using System.Web.ModelBinding;
-using System.Web.UI;
-using System.Web.UI.WebControls;
 using qa_website.Logic;
 using qa_website.Model;
 
@@ -27,7 +21,7 @@ namespace qa_website.Panel
                 _newLastName = LastNameTextBox.Text;
 
                 try
-                {                    
+                {
                     BindUserData(userId);
                 }
                 catch
@@ -43,6 +37,7 @@ namespace qa_website.Panel
             if (IsPostBack)
             {
                 ErrorDiv.Visible = false;
+                SuccssDiv.Visible = false;
             }
         }
 
@@ -58,18 +53,33 @@ namespace qa_website.Panel
                 {
                     auth.UpdateProfile(userId, firstName, lastName);
                     BindUserData(userId);
+                    SuccssDiv.Visible = true;
                 }
                 catch (Exception)
                 {
                     ErrorMessage.InnerText = "There was a problem with registration. Please try again later.";
-                    ErrorMessage.Visible = true;
+                    ErrorDiv.Visible = true;
                 }
             }
         }
 
         protected void ChangePsswordButton_OnClick(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            using (var auth = new AccountController())
+            {
+                var userId = int.Parse(Request.QueryString["UserId"]);
+
+                try
+                {
+                    auth.UpdatePassword(userId, OldPasswordTextBox.Text, PasswordTextBox.Text);
+                    SuccssDiv.Visible = true;
+                }
+                catch (Exception exception)
+                {
+                    ErrorMessage.InnerText = exception.Message;
+                    ErrorDiv.Visible = true;
+                }
+            }
         }
 
         private void BindUserData(int userId)

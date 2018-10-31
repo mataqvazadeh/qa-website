@@ -5,6 +5,10 @@
         <button type="button" class="close" data-dismiss="alert">&times;</button>
         <span runat="server" id="ErrorMessage"></span>
     </div>
+    <div class="alert alert-dismissible alert-success mt-2" runat="server" id="SuccssDiv" visible="False">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        Your Profile/Password updated successfully.
+    </div>
     <div class="jumbotron">
         <h1><span runat="server" id="UserFullName" class="text-info"></span>&nbsp;Profile</h1>
         <div class="row mt-4">
@@ -19,7 +23,7 @@
                         <asp:Label runat="server" ID="LastNameLabel" AssociatedControlID="LastNameTextBox">Last Name</asp:Label>
                         <asp:TextBox runat="server" ID="LastNameTextBox" class="form-control" placeholder="Enter your last name" TextMode="SingleLine"></asp:TextBox>
                     </div>
-                    <asp:Button runat="server" CssClass="btn btn-primary w-100 btn-lg" Text="Save Information" ID="InformationSubmitButton" OnClick="InformationSubmitButton_OnClick" />
+                    <asp:Button runat="server" CssClass="btn btn-primary w-100 btn-lg" Text="Update Profile" ID="InformationSubmitButton" OnClick="InformationSubmitButton_OnClick" />
                 </fieldset>
             </div>
             <div class="col-6">

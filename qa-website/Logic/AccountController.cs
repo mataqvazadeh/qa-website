@@ -78,6 +78,20 @@ namespace qa_website.Logic
             _dbContext.SaveChanges();
         }
 
+        public void UpdatePassword(int userId, string oldPassword, string newPassword)
+        {
+            var user = _dbContext.Users.Single(u => u.Id == userId);
+
+            if (!ValidateUser(user.Email, oldPassword))
+            {
+                throw new Exception("Your old password is wrong.");
+            }
+
+            user.Password = PasswordEncryptor.ComputeHash(newPassword);
+
+            _dbContext.SaveChanges();
+        }
+
         public void Dispose()
         {
             _dbContext?.Dispose();
