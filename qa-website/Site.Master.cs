@@ -4,8 +4,10 @@ using System.Linq;
 using System.Web;
 using System.Web.Security;
 using System.Web.UI;
+using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using qa_website.Logic;
+using qa_website.Model;
 
 namespace qa_website
 {
@@ -15,12 +17,15 @@ namespace qa_website
         {
             if(HttpContext.Current.User.Identity.IsAuthenticated)
             {
+                var user = GetUser();
+
                 askLink.Visible = true;
 
-                using (var auth = new AccountController())
-                {
-                   
-                }
+                var statsLinkTag = (HtmlAnchor) LoginView1.FindControl("UserStatLink");
+                statsLinkTag.HRef = $"~/UserStats.aspx?UserId={user.Id}";
+
+                var userDropDown = (HtmlAnchor) LoginView1.FindControl("UserNameDropDown");
+                userDropDown.InnerText = user.FullName;
             }
         }
 
@@ -28,6 +33,17 @@ namespace qa_website
         {
             FormsAuthentication.SignOut();
             Response.Redirect("~/");
+        }
+
+        public User GetUser()
+        {
+            var dbContext = new QAContext();
+            var userIdentity = HttpContext.Current.User.Identity;
+            IQueryable<User> query = dbContext.Users;
+
+            query = userIdentity.IsAuthenticated ? query.Where(u => u.Email == userIdentity.Name) : null;
+
+            return query?.Single();
         }
     }
 }
