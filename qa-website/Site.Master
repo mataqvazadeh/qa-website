@@ -73,7 +73,7 @@
                         </ul>
                     </AnonymousTemplate>
                     <LoggedInTemplate>
-                        <ul class="nav navbar-nav navbar-right">
+                        <ul class="navbar-nav ml-auto">
                             <li class="nav-item dropdown">
                                 <a runat="server" id="UserNameDropDown" class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"></a>
                                 <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 37px, 0px); top: 0px; left: 0px; will-change: transform;">
