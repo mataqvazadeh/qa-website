@@ -24,6 +24,8 @@ namespace qa_website
 
         }
 
+        #region User Methods
+
         public IQueryable<User> GetUser([QueryString("UserId")] int? userId)
         {
             var dbContext = new QAContext();
@@ -31,7 +33,7 @@ namespace qa_website
 
             if (userId.HasValue && userId > 0)
             {
-                query = query.Where(q => q.Id == userId.Value);
+                query = query.Where(u => u.Id == userId.Value);
             }
             else
             {
@@ -41,5 +43,55 @@ namespace qa_website
 
             return query;
         }
+
+        #endregion
+
+        #region Questions Methods
+
+        public IQueryable<Question> GetQuestions([QueryString("UserId")] int? userId)
+        {
+            var dbContext = new QAContext();
+            IQueryable<Question> query = dbContext.Questions;
+
+            if (userId.HasValue && userId > 0)
+            {
+                query = query.Where(q => q.AuthorId == userId.Value);
+
+                // sorting or filtering
+                switch (QuestionSortValue.Value)
+                {
+                    case "newest":
+                        query = query.OrderByDescending(q => q.CreateDate);
+                        break;
+                    case "votes":
+                        query = query.OrderByDescending(q => q.Votes.Sum(v => v.VoteValue))
+                            .ThenByDescending(q => q.CreateDate);
+                        break;
+                }
+            }
+            else
+            {
+                query = null;
+            }
+
+            return query;
+        }
+
+        protected void QuestionsList_OnPagePropertiesChanging(object sender, PagePropertiesChangingEventArgs e)
+        {
+            //set current page startindex, max rows and rebind to false
+            QuestionsDataPager.SetPageProperties(e.StartRowIndex, e.MaximumRows, false);
+            QuestionsList.DataBind();
+        }
+
+        protected void sortQuestionRadioButton_OnCheckedChanged(object sender, EventArgs e)
+        {
+            var radioButton = (RadioButton)sender;
+            QuestionSortValue.Value = radioButton.Text.ToLower();
+            QuestionsList.DataBind();
+        }
+
+        #endregion
+
     }
 }

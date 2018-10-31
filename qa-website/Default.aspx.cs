@@ -50,8 +50,8 @@ namespace qa_website
         {
             var radioButton = (RadioButton) sender;
             QuestionSortValue.Value = radioButton.Text.ToLower();
+            QuestionsList.DataBind();
             QuestionsCountLable_OnLoad(sender, e);
-            QuestionsCountLable.DataBind();
         }
 
         protected void QuestionsCountLable_OnLoad(object sender, EventArgs e)
