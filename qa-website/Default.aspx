@@ -10,6 +10,17 @@
                 <h1>Questions</h1>
             </div>
             <div class="col-6 text-right">
+                <asp:LinkButton runat="server" ID="AskQuestionButton" CssClass="btn btn-primary btn-lg"
+                    Text="Ask Question" PostBackUrl="~/Panel/AskQuestion.aspx" />
+            </div>            
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <h5 class="mt-3">
+                    <asp:Label runat="server" ID="QuestionsCountLable" OnLoad="QuestionsCountLable_OnLoad"></asp:Label>&nbsp;questions                    
+                </h5>
+            </div>
+            <div class="col-6 text-right">
                 <div class="btn-group btn-group-toggle">
                     <label class="btn btn-primary <%= QuestionSortValue.Value == "newest" ? "active" : "" %>">
                         <asp:RadioButton runat="server" ID="sortNewest" AutoPostBack="True" Checked='<%# QuestionSortValue.Value == "newest" %>'

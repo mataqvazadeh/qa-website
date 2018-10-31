@@ -50,7 +50,21 @@ namespace qa_website
         {
             var radioButton = (RadioButton) sender;
             QuestionSortValue.Value = radioButton.Text.ToLower();
-            QuestionsList.DataBind();
+            QuestionsCountLable_OnLoad(sender, e);
+            QuestionsCountLable.DataBind();
+        }
+
+        protected void QuestionsCountLable_OnLoad(object sender, EventArgs e)
+        {
+            var dbContext = new QAContext();
+            IQueryable<Question> query = dbContext.Questions;
+
+            if (QuestionSortValue.Value == "unanswered")
+            {
+                query = query.Where(q => q.Answers.Count == 0);
+            }
+
+            QuestionsCountLable.Text = query.Count().ToString("N0");
         }
     }
 }
