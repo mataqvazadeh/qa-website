@@ -226,13 +226,6 @@ namespace qa_website
             }
         }
 
-        protected void SortButton_OnClick(object sender, EventArgs e)
-        {
-            var dropDownList = (DropDownList)QuestionDetailFormView.FindControl("SortOptionsList");
-            AnswersSortValue.Value = dropDownList.SelectedValue;
-            AnswersList.DataBind();
-        }
-
         protected void AnswerSubmitButton_OnClick(object sender, EventArgs e)
         {
             var logginedUser = HttpContext.Current.User.Identity;
@@ -265,13 +258,13 @@ namespace qa_website
             }
         }
 
-        #endregion
-
         protected void sortAnswerRadioButton_OnCheckedChanged(object sender, EventArgs e)
         {
             var radioButton = (RadioButton)sender;
             AnswersSortValue.Value = radioButton.Text.ToLower();
             AnswersList.DataBind();
         }
+
+        #endregion
     }
 }
