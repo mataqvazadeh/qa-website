@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.ModelBinding;
-using System.Web.UI;
 using System.Web.UI.WebControls;
 using qa_website.Model;
 
@@ -93,5 +90,51 @@ namespace qa_website
 
         #endregion
 
+        #region Answers Methods
+
+        public IQueryable<Answer> GetAnswers([QueryString("UserId")] int? userId)
+        {
+            var dbContext = new QAContext();
+            IQueryable<Answer> query = dbContext.Answers;
+
+            if (userId.HasValue && userId > 0)
+            {
+                query = query.Where(a => a.AuthorId == userId.Value);
+
+                // sorting or filtering
+                switch (AnswerSortValue.Value)
+                {
+                    case "newest":
+                        query = query.OrderByDescending(a => a.CreateDate);
+                        break;
+                    case "votes":
+                        query = query.OrderByDescending(a => a.Votes.Sum(v => v.VoteValue))
+                            .ThenByDescending(a => a.CreateDate);
+                        break;
+                }
+            }
+            else
+            {
+                query = null;
+            }
+
+            return query;
+        }
+
+        protected void AnswersList_OnPagePropertiesChanging(object sender, PagePropertiesChangingEventArgs e)
+        {
+            //set current page startindex, max rows and rebind to false
+            AnswersDataPager.SetPageProperties(e.StartRowIndex, e.MaximumRows, false);
+            AnswersList.DataBind();
+        }
+
+        protected void sortAnswerRadioButton_OnCheckedChanged(object sender, EventArgs e)
+        {
+            var radioButton = (RadioButton)sender;
+            AnswerSortValue.Value = radioButton.Text.ToLower();
+            AnswersList.DataBind();
+        }
+
+        #endregion
     }
 }

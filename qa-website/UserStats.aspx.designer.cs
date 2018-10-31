@@ -31,22 +31,22 @@ namespace qa_website {
         protected global::System.Web.UI.WebControls.HiddenField QuestionSortValue;
         
         /// <summary>
-        /// sortVotes control.
+        /// QuestionSortVotes control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButton sortVotes;
+        protected global::System.Web.UI.WebControls.RadioButton QuestionSortVotes;
         
         /// <summary>
-        /// sortNewest control.
+        /// QuestionSortNewest control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButton sortNewest;
+        protected global::System.Web.UI.WebControls.RadioButton QuestionSortNewest;
         
         /// <summary>
         /// QuestionsList control.
@@ -65,5 +65,50 @@ namespace qa_website {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DataPager QuestionsDataPager;
+        
+        /// <summary>
+        /// AnswerSortValue control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField AnswerSortValue;
+        
+        /// <summary>
+        /// AnswerSortVotes control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RadioButton AnswerSortVotes;
+        
+        /// <summary>
+        /// AnswerSortNewest control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RadioButton AnswerSortNewest;
+        
+        /// <summary>
+        /// AnswersList control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ListView AnswersList;
+        
+        /// <summary>
+        /// AnswersDataPager control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DataPager AnswersDataPager;
     }
 }
