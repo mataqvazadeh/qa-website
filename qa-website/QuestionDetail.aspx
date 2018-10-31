@@ -25,7 +25,7 @@
         <ItemTemplate>
             <div class="jumbotron">
                 <h2><%# Item.Title %></h2>
-                <p>Asked by&nbsp;<a href="#"><%# Item.User.FullName %></a>&nbsp;At&nbsp;<%# Item.CreateDate.ToString(CultureInfo.InvariantCulture) %></p>
+                <p>Asked by&nbsp;<a runat="server" href='<%# $"~/UserStats.aspx?UserId={Item.User.Id}" %>'><%# Item.User.FullName %></a>&nbsp;At&nbsp;<%# Item.CreateDate.ToString(CultureInfo.InvariantCulture) %></p>
                 <hr />
                 <div class="row">
                     <div class="col-1 text-center">
@@ -44,7 +44,7 @@
                         ItemType="qa_website.Model.Comment" DataKeyNames="Id">
                         <ItemTemplate>
                             <hr />
-                            <p><%# Item.Body %>&nbsp;-&nbsp;<a href="#"><%# Item.User.FullName %></a>&nbsp;At&nbsp;<%# Item.CreateDate.ToString(CultureInfo.InvariantCulture) %></p>
+                            <p><%# Item.Body %>&nbsp;-&nbsp;<a runat="server" href='<%# $"~/UserStats.aspx?UserId={Item.User.Id}" %>'><%# Item.User.FullName %></a>&nbsp;At&nbsp;<%# Item.CreateDate.ToString(CultureInfo.InvariantCulture) %></p>
                         </ItemTemplate>
                     </asp:ListView>
                 </div>
@@ -112,7 +112,7 @@
                         </asp:LinkButton>
                     </asp:PlaceHolder>
                     &nbsp;&nbsp;
-                            Answerd By&nbsp;<a href="#" class="card-link"><%# Item.User.FullName %></a>&nbsp;At&nbsp;<%# Item.CreateDate.ToString(CultureInfo.InvariantCulture) %>
+                            Answerd By&nbsp;<a runat="server" href='<%# $"~/UserStats.aspx?UserId={Item.User.Id}" %>' class="card-link"><%# Item.User.FullName %></a>&nbsp;At&nbsp;<%# Item.CreateDate.ToString(CultureInfo.InvariantCulture) %>
                 </div>
                 <div class="card-body">
                     <div class="row">
@@ -132,7 +132,7 @@
                             ItemType="qa_website.Model.Comment" DataKeyNames="Id">
                             <ItemTemplate>
                                 <hr />
-                                <p><%# Item.Body %>&nbsp;-&nbsp;<a href="#"><%# Item.User.FullName %></a>&nbsp;At&nbsp;<%# Item.CreateDate.ToString(CultureInfo.InvariantCulture) %></p>
+                                <p><%# Item.Body %>&nbsp;-&nbsp;<a runat="server" href='<%# $"~/UserStats.aspx?UserId={Item.User.Id}" %>'><%# Item.User.FullName %></a>&nbsp;At&nbsp;<%# Item.CreateDate.ToString(CultureInfo.InvariantCulture) %></p>
                             </ItemTemplate>
                         </asp:ListView>
                     </div>

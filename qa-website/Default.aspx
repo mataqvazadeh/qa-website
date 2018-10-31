@@ -54,7 +54,7 @@
                     </div>
                     <div class="col-10">
                         <h4><a runat="server" class="card-link" href='<%# $"~/QuestionDetail.aspx?QuestionID={Item.Id}" %>'><%# Item.Title %></a></h4>
-                        <p class="text-muted">Asked by&nbsp;<a href="#"><%# Item.User.FullName %></a>&nbsp;At&nbsp;<%# Item.CreateDate.ToString(CultureInfo.InvariantCulture) %></p>
+                        <p class="text-muted">Asked by&nbsp;<a runat="server" href='<%# $"~/UserStats.aspx?UserId={Item.User.Id}" %>'><%# Item.User.FullName %></a>&nbsp;At&nbsp;<%# Item.CreateDate.ToString(CultureInfo.InvariantCulture) %></p>
                     </div>
                 </div>
             </ItemTemplate>
