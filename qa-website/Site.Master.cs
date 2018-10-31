@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Security;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
-using qa_website.Logic;
 using qa_website.Model;
 
 namespace qa_website
@@ -23,6 +21,9 @@ namespace qa_website
 
                 var statsLinkTag = (HtmlAnchor) LoginView1.FindControl("UserStatLink");
                 statsLinkTag.HRef = $"~/UserStats.aspx?UserId={user.Id}";
+
+                var profileLinkTag = (HtmlAnchor) LoginView1.FindControl("UserProfileLink");
+                profileLinkTag.HRef = $"~/Panel/Profile.aspx?UserId={user.Id}";
 
                 var userDropDown = (HtmlAnchor) LoginView1.FindControl("UserNameDropDown");
                 userDropDown.InnerText = user.FullName;

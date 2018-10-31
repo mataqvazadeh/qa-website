@@ -11,7 +11,7 @@
             });
         });
     </script>
-    <div runat="server" id="ErrorDiv" class="alert alert-dismissible alert-danger" visible="False">
+    <div runat="server" id="ErrorDiv" class="alert alert-dismissible alert-danger mt-2" visible="False">
         <button type="button" class="close" data-dismiss="alert">&times;</button>
         <h4 class="alert-heading">Error</h4>
         <p class="mb-0" runat="server" id="ErrorMessage"></p>
