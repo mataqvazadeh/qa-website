@@ -19,7 +19,10 @@ namespace qa_website
 
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            if (IsPostBack)
+            {
+                AlertDiv.Visible = false;
+            }
         }
 
         protected void SubmitButton_Click(object sender, EventArgs e)

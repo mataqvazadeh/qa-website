@@ -1,31 +1,36 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Web;
+using System.Web.ModelBinding;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using qa_website.Logic;
 using qa_website.Model;
 
 namespace qa_website.Panel
 {
     public partial class Profile : System.Web.UI.Page
     {
+        private string _newFirstName;
+        private string _newLastName;
+
         protected void Page_Load(object sender, EventArgs e)
         {
-            var dbContext = new QAContext();
             int userId;
 
             if (int.TryParse(Request.QueryString["UserId"], out userId) && userId > 0)
             {
-                var user = dbContext.Users.SingleOrDefault(u => u.Id == userId);
+                // save user inut data
+                _newFirstName = FirstNameTextBox.Text;
+                _newLastName = LastNameTextBox.Text;
 
-                if (user != null)
-                {
-                    Title = UserFullName.InnerText = user.FullName;
-                    FirstNameTextBox.Text = user.FirstName;
-                    LastNameTextBox.Text = user.LastName;
+                try
+                {                    
+                    BindUserData(userId);
                 }
-                else
+                catch
                 {
                     Response.Redirect("~/");
                 }
@@ -34,16 +39,48 @@ namespace qa_website.Panel
             {
                 Response.Redirect("~/");
             }
+
+            if (IsPostBack)
+            {
+                ErrorDiv.Visible = false;
+            }
         }
 
         protected void InformationSubmitButton_OnClick(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            using (var auth = new AccountController())
+            {
+                var firstName = string.IsNullOrEmpty(_newFirstName) ? null : _newFirstName;
+                var lastName = string.IsNullOrEmpty(_newLastName) ? null : _newLastName;
+                var userId = int.Parse(Request.QueryString["UserId"]);
+
+                try
+                {
+                    auth.UpdateProfile(userId, firstName, lastName);
+                    BindUserData(userId);
+                }
+                catch (Exception)
+                {
+                    ErrorMessage.InnerText = "There was a problem with registration. Please try again later.";
+                    ErrorMessage.Visible = true;
+                }
+            }
         }
 
         protected void ChangePsswordButton_OnClick(object sender, EventArgs e)
         {
             throw new NotImplementedException();
+        }
+
+        private void BindUserData(int userId)
+        {
+            var dbContext = new QAContext();
+            var user = dbContext.Users.Single(u => u.Id == userId);
+
+            Title = UserFullName.InnerText = user.FullName;
+
+            FirstNameTextBox.Text = user.FirstName;
+            LastNameTextBox.Text = user.LastName;
         }
     }
 }

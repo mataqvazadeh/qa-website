@@ -68,10 +68,14 @@ namespace qa_website.Logic
             }
         }
 
-        public string GetName(string userName)
+        public void UpdateProfile(int userId, string firstName, string lastName)
         {
-            var user = _dbContext.Users.Single(u => u.Email == userName);
-            return user.FullName;
+            var user = _dbContext.Users.Single(u => u.Id == userId);
+
+            user.FirstName = firstName;
+            user.LastName = lastName;
+
+            _dbContext.SaveChanges();
         }
 
         public void Dispose()
