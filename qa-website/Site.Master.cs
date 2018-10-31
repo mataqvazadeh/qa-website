@@ -11,9 +11,14 @@ namespace qa_website
 {
     public partial class SiteMaster : MasterPage
     {
+        private string _newSearchTerm;
+
         protected void Page_Load(object sender, EventArgs e)
         {
-            if(HttpContext.Current.User.Identity.IsAuthenticated)
+            _newSearchTerm = SearchTextBox.Text;
+            SearchTextBox.Text = Request.QueryString["search"];
+
+            if (HttpContext.Current.User.Identity.IsAuthenticated)
             {
                 var user = GetUser();
 
@@ -45,6 +50,11 @@ namespace qa_website
             query = userIdentity.IsAuthenticated ? query.Where(u => u.Email == userIdentity.Name) : null;
 
             return query?.Single();
+        }
+
+        protected void SearchButton_OnClick(object sender, EventArgs e)
+        {
+            Response.Redirect($"~/Default.aspx?search={HttpUtility.UrlEncode(_newSearchTerm)}");
         }
     }
 }

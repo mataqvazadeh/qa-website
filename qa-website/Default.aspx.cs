@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.ModelBinding;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using qa_website.Model;
@@ -14,10 +15,17 @@ namespace qa_website
         {
         }
 
-        public IQueryable<Question> GetQuestions()
+        public IQueryable<Question> GetQuestions([QueryString("search")] string search)
         {
             var dbContext = new QAContext();
             IQueryable<Question> query = dbContext.Questions;
+
+            // search
+            if (!string.IsNullOrEmpty(search))
+            {
+                search = HttpUtility.UrlDecode(search);
+                query = query.Where(q => q.Title.Contains(search) || q.Body.Contains(search));
+            }
 
             // sorting or filtering
             switch (QuestionSortValue.Value)
@@ -58,13 +66,24 @@ namespace qa_website
         {
             var dbContext = new QAContext();
             IQueryable<Question> query = dbContext.Questions;
+            var search = Request.QueryString["search"];
+            var prefix = "";
+
+            if (!string.IsNullOrEmpty(search))
+            {
+                search = HttpUtility.UrlDecode(search);
+                query = query.Where(q => q.Title.Contains(search) || q.Body.Contains(search));
+                prefix += " searched";
+            }
 
             if (QuestionSortValue.Value == "unanswered")
             {
                 query = query.Where(q => q.Answers.Count == 0);
+                prefix += " unanswered";
             }
 
-            QuestionsCountLable.Text = query.Count().ToString("N0");
+            QuestionsCountLable.Text = query.Count().ToString("N0") + prefix;
+
         }
     }
 }

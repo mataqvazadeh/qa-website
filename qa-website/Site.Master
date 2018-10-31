@@ -53,6 +53,18 @@
                     <li class="nav-item <%= Page.Title == "About" ? "active" : "" %>"><a runat="server" class="nav-link" href="~/About">About</a></li>
                     <li class="nav-item <%= Page.Title == "Contact" ? "active" : "" %>"><a runat="server" class="nav-link" href="~/Contact">Contact</a></li>
                 </ul>
+                <ul class="navbar-nav abs-center-x">
+                    <li>
+                        <div class="form-inline my-2 my-lg-0">
+                            <asp:TextBox runat="server" ID="SearchTextBox" CssClass="form-control mr-sm-2" placeholder="Search"
+                                TextMode="SingleLine" ValidationGroup="SearchBox" Width="400"></asp:TextBox>
+                            <asp:RequiredFieldValidator runat="server" ID="SearchRequiredFieldValidator" ValidationGroup="SearchBox"
+                                Display="None" ControlToValidate="SearchTextBox" EnableClientScript="True"></asp:RequiredFieldValidator>
+                            <asp:Button runat="server" ID="SearchButton" CssClass="btn btn-secondary my-2 my-sm-0" Text="Search"
+                                ValidationGroup="SearchBox" CausesValidation="True" OnClick="SearchButton_OnClick" />
+                        </div>
+                    </li>
+                </ul>
                 <asp:LoginView runat="server" ViewStateMode="Disabled" ID="LoginView1">
                     <AnonymousTemplate>
                         <ul class="navbar-nav ml-auto">
@@ -63,21 +75,16 @@
                     <LoggedInTemplate>
                         <ul class="nav navbar-nav navbar-right">
                             <li class="nav-item dropdown">
-                                <a runat="server" ID="UserNameDropDown" class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"></a>
+                                <a runat="server" id="UserNameDropDown" class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"></a>
                                 <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 37px, 0px); top: 0px; left: 0px; will-change: transform;">
-                                    <a runat="server" ID="UserStatLink" class="dropdown-item" href="#">Stats</a>
-                                    <a runat="server" ID="UserProfileLink" class="dropdown-item" href="#">Profile</a>
+                                    <a runat="server" id="UserStatLink" class="dropdown-item" href="#">Stats</a>
+                                    <a runat="server" id="UserProfileLink" class="dropdown-item" href="#">Profile</a>
                                     <asp:LoginStatus runat="server" class="dropdown-item" LogoutAction="Redirect" LogoutText="Log off" LogoutPageUrl="~/" OnLoggingOut="LoggingOut" ID="LoginStatus2" />
                                 </div>
                             </li>
                         </ul>
                     </LoggedInTemplate>
                 </asp:LoginView>
-
-                <%--                <form class="form-inline my-2 my-lg-0">
-                    <input class="form-control mr-sm-2" placeholder="Search" type="text">
-                    <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
-                </form>--%>
             </div>
         </nav>
         <div class="container body-content">
