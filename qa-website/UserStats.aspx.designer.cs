@@ -31,6 +31,15 @@ namespace qa_website {
         protected global::System.Web.UI.WebControls.HiddenField QuestionSortValue;
         
         /// <summary>
+        /// QuestionSortButtons control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.PlaceHolder QuestionSortButtons;
+        
+        /// <summary>
         /// QuestionSortVotes control.
         /// </summary>
         /// <remarks>
@@ -74,6 +83,15 @@ namespace qa_website {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField AnswerSortValue;
+        
+        /// <summary>
+        /// AnswerSortButtons control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.PlaceHolder AnswerSortButtons;
         
         /// <summary>
         /// AnswerSortVotes control.

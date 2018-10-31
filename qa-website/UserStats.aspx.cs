@@ -65,6 +65,8 @@ namespace qa_website
                             .ThenByDescending(q => q.CreateDate);
                         break;
                 }
+
+                QuestionSortButtons.Visible = query.Count() > 1;
             }
             else
             {
@@ -112,6 +114,8 @@ namespace qa_website
                             .ThenByDescending(a => a.CreateDate);
                         break;
                 }
+
+                AnswerSortButtons.Visible = query.Count() > 1;
             }
             else
             {
