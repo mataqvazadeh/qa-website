@@ -2,7 +2,7 @@
 
 <asp:Content ID="LoginForm" ContentPlaceHolderID="MainContent" runat="server">
     <div class="jumbotron">
-        <asp:Login ID="Login1" runat="server" DestinationPageUrl="~/" DisplayRememberMe="False" OnAuthenticate="Login1_Authenticate" VisibleWhenLoggedIn="False" OnLoggedIn="Login1_LoggedIn">
+        <asp:Login ID="Login1" runat="server" DestinationPageUrl="~/" DisplayRememberMe="False" OnAuthenticate="Login1_Authenticate" VisibleWhenLoggedIn="False" OnLoggedIn="Login1_LoggedIn" CreateUserText="Register" CreateUserUrl="~/Register.aspx" UserNameLabelText="Email:">
         </asp:Login>
     </div>
 </asp:Content>
