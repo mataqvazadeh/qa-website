@@ -116,9 +116,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="About.aspx" />
-    <Content Include="App_Data\qadb.mdf" />
-    <Content Include="App_Data\qadb_log.ldf">
-      <DependentUpon>qadb.mdf</DependentUpon>
+    <Content Include="App_Data\_qadb.mdf" />
+    <Content Include="App_Data\_qadb_log.ldf">
+      <DependentUpon>_qadb.mdf</DependentUpon>
     </Content>
     <Content Include="Contact.aspx" />
     <Content Include="Content\bootstrap-grid.css" />
